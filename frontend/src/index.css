@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   MoodQuest design tokens
+   Dark navy surfaces, violet primary, cyan secondary, glass panels.
+   ------------------------------------------------------------------ */
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-ink-950: #050816;
+  --color-ink-900: #070b1d;
+  --color-ink-850: #0b1129;
+  --color-ink-800: #101736;
+  --color-ink-700: #18214a;
+  --color-ink-600: #232e60;
+
+  --color-primary-200: #ddd6fe;
+  --color-primary-300: #c4b5fd;
+  --color-primary-400: #a78bfa;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+
+  --color-accent-300: #67e8f9;
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+
+  --color-positive: #34d399;
+  --color-warning: #fb923c;
+  --color-danger: #f43f5e;
+
+  --color-mood-happy: #34d399;
+  --color-mood-calm: #38bdf8;
+  --color-mood-stressed: #a78bfa;
+  --color-mood-sad: #f472b6;
+  --color-mood-angry: #f43f5e;
+  --color-mood-anxious: #fb923c;
+
+  --radius-card: 1.25rem;
+
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-slide-up: slide-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pop: pop 0.25s ease-out both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-breathe: breathe 4s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.92); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-ink-900 font-sans text-slate-100 antialiased;
+    background-image:
+      radial-gradient(60rem 40rem at 10% -10%, rgb(124 58 237 / 0.18), transparent 60%),
+      radial-gradient(50rem 35rem at 110% 10%, rgb(6 182 212 / 0.10), transparent 60%),
+      radial-gradient(40rem 30rem at 50% 120%, rgb(236 72 153 / 0.08), transparent 60%);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: rgb(139 92 246 / 0.45);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary-400);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Glass panel used for every card in the UI reference. */
+  .glass {
+    background: linear-gradient(160deg, rgb(24 33 74 / 0.72), rgb(11 17 41 / 0.72));
+    border: 1px solid rgb(255 255 255 / 0.07);
+    border-radius: var(--radius-card);
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.04) inset,
+      0 10px 30px -12px rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(14px);
+  }
+  .glass-strong {
+    background: linear-gradient(160deg, rgb(35 46 96 / 0.75), rgb(16 23 54 / 0.8));
+    border: 1px solid rgb(255 255 255 / 0.09);
+    border-radius: var(--radius-card);
+    backdrop-filter: blur(16px);
+  }
+  .glow-primary {
+    box-shadow: 0 0 0 1px rgb(167 139 250 / 0.35), 0 8px 30px -6px rgb(139 92 246 / 0.55);
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, #e9d5ff 0%, #a78bfa 45%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
