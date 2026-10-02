@@ -26,7 +26,6 @@ interface Burst {
   color: string;
 }
 
-/** Pop the floating bubbles before they fade. One point per bubble. */
 export function StressBurstGame({ onFinish }: GameProps) {
   const [running, setRunning] = useState(false);
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
@@ -70,7 +69,6 @@ export function StressBurstGame({ onFinish }: GameProps) {
               },
             ],
       );
-      // Bubbles appear faster as the round goes on.
       const progress = (Date.now() - startRef.current) / (ROUND_SECONDS * 1000);
       spawnTimer = window.setTimeout(spawn, 650 - progress * 350);
     };

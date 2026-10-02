@@ -6,10 +6,8 @@ import { SideNav } from "@/components/navigation/SideNav";
 import { LoadingState } from "@/components/ui/States";
 import { cn } from "@/lib/cn";
 
-/** Authenticated shell: sidebar on desktop, bottom navigation on mobile/tablet. */
 export function AppLayout() {
   const { pathname } = useLocation();
-  // The chat screen manages its own full-height scroll area.
   const fullHeight = pathname.startsWith("/chat");
 
   return (

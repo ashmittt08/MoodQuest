@@ -25,7 +25,6 @@ function nextRound() {
   return { word, ink, match };
 }
 
-/** Stroop-style focus game: does the word's meaning match its ink colour? */
 export function ColorMatchGame({ onFinish }: GameProps) {
   const [running, setRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS);

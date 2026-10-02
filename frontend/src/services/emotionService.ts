@@ -1,10 +1,6 @@
 import { api } from "@/lib/api";
 import type { EmotionStatus } from "@/types";
 
-/**
- * Phase 2 integration point. The backend currently answers /analyze with
- * 501 Not Implemented — no emotion results are produced or faked in Phase 1.
- */
 export const emotionService = {
   async getStatus(): Promise<EmotionStatus> {
     const { data } = await api.get<EmotionStatus>("/api/emotion/status");

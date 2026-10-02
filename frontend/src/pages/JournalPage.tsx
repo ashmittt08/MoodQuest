@@ -17,7 +17,7 @@ import { formatDateTime } from "@/utils/date";
 import { MOODS } from "@/utils/moods";
 
 interface EditorState {
-  entry: JournalEntry | null; // null = new entry
+  entry: JournalEntry | null;
 }
 
 function JournalEditor({ initial, onSaved, onCancel }: { initial: JournalEntry | null; onSaved: () => void; onCancel: () => void }) {

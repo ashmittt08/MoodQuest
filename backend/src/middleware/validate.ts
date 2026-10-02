@@ -22,11 +22,6 @@ function friendlyField(path: PropertyKey[]): string {
   return field ? field.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase()) : "";
 }
 
-/**
- * Validate request parts with Zod. Parsed values are stored on `req.valid`
- * (Express 5's `req.query` is read-only). Failures become 422 with a readable
- * `detail` (first problem) plus the full `errors` list.
- */
 export function validate(schemas: Schemas) {
   return (req: Request, _res: Response, next: NextFunction) => {
     req.valid = {};
@@ -49,7 +44,6 @@ export function validate(schemas: Schemas) {
   };
 }
 
-/** Typed accessors for validated input. */
 export const body = <T>(req: Request) => req.valid.body as T;
 export const query = <T>(req: Request) => req.valid.query as T;
 export const params = <T>(req: Request) => req.valid.params as T;

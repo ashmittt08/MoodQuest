@@ -10,10 +10,6 @@ interface AsyncState<T> {
   setData: React.Dispatch<React.SetStateAction<T | null>>;
 }
 
-/**
- * Run an async loader (usually a service call) and track loading/error state.
- * Re-runs whenever `deps` change; stale responses are ignored.
- */
 export function useAsync<T>(loader: () => Promise<T>, deps: DependencyList): AsyncState<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);

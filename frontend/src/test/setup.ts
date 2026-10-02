@@ -7,7 +7,6 @@ afterEach(() => {
   localStorage.clear();
 });
 
-// Recharts' ResponsiveContainer needs ResizeObserver, which jsdom lacks.
 class ResizeObserverStub {
   observe() {}
   unobserve() {}
@@ -15,5 +14,4 @@ class ResizeObserverStub {
 }
 globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
 
-// jsdom does not implement element scrolling.
 Element.prototype.scrollTo ??= function scrollTo() {};

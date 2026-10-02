@@ -33,7 +33,6 @@ function shuffledDeck(): CardState[] {
   return deck.map((symbol, id) => ({ id, symbol, matched: false }));
 }
 
-/** Classic pairs game. Fewer moves and less time = higher score. */
 export function MemoryChallengeGame({ onFinish }: GameProps) {
   const [started, setStarted] = useState(false);
   const [cards, setCards] = useState<CardState[]>(shuffledDeck);

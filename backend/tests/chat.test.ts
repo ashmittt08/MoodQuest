@@ -34,7 +34,6 @@ describe("chat", () => {
     expect(res.body.assistant_message.content).toBeTruthy();
     expect(res.body.suggestions.length).toBeGreaterThan(0);
 
-    // Reload from the database: history survives a page refresh.
     const detail = (await api().get(`/api/chat/conversations/${conversation.id}`).set(account.headers)).body;
     expect(detail.messages.map((m: { sender: string }) => m.sender)).toEqual(["assistant", "user", "assistant"]);
     expect(detail.title.startsWith("I'm feeling a bit stressed")).toBe(true);

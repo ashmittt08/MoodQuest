@@ -1,4 +1,3 @@
-/** An error with an HTTP status and a user-safe `detail` message. */
 export class HttpError extends Error {
   readonly status: number;
   readonly detail: string;

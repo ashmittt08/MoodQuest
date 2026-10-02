@@ -4,22 +4,20 @@ import { z } from "zod";
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(4000),
-  /** Allowed browser origin(s), comma-separated. */
   FRONTEND_URL: z.string().default("http://localhost:5173"),
 
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters long"),
   JWT_EXPIRES_IN_MINUTES: z.coerce.number().int().positive().default(60),
 
-  // Emergency page resources — configuration, not code. Set them for your region.
   EMERGENCY_NUMBER: z.string().default("112"),
   HELPLINE_NAME: z.string().default("Tele-MANAS National Mental Health Helpline"),
   HELPLINE_NUMBER: z.string().default("14416"),
   HELPLINE_AVAILABILITY: z.string().default("Available 24/7"),
 
-  // Phase 2 integration switches.
-  ASSISTANT_PROVIDER: z.string().default("rule_based"),
-  EMOTION_PROVIDER: z.string().default("none"),
+  ASSISTANT_PROVIDER: z.enum(["rule_based", "groq"]).default("rule_based"),
+  GROQ_API_KEY: z.preprocess((v) => (typeof v === "string" && v.trim() === "" ? undefined : v), z.string().trim().optional()),
+  GROQ_MODEL: z.preprocess((v) => (typeof v === "string" && v.trim() === "" ? undefined : v), z.string().trim().default("openai/gpt-oss-120b")),
 });
 
 const parsed = schema.safeParse(process.env);

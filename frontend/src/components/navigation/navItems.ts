@@ -19,7 +19,6 @@ export interface NavItem {
   icon: LucideIcon;
 }
 
-/** The five primary destinations shown in the bottom navigation (UI reference). */
 export const PRIMARY_NAV: NavItem[] = [
   { to: "/", label: "Home", icon: House },
   { to: "/chat", label: "Chat", icon: MessageCircle },
@@ -28,7 +27,6 @@ export const PRIMARY_NAV: NavItem[] = [
   { to: "/profile", label: "Profile", icon: User },
 ];
 
-/** Extra destinations shown in the desktop sidebar. */
 export const EXPLORE_NAV: NavItem[] = [
   { to: "/music", label: "Music", icon: Music },
   { to: "/movies", label: "Movies", icon: Clapperboard },

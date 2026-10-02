@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------
-   MoodQuest design tokens
-   Dark navy surfaces, violet primary, cyan secondary, glass panels.
-   ------------------------------------------------------------------ */
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -96,7 +92,6 @@
 }
 
 @layer components {
-  /* Glass panel used for every card in the UI reference. */
   .glass {
     background: linear-gradient(160deg, rgb(24 33 74 / 0.72), rgb(11 17 41 / 0.72));
     border: 1px solid rgb(255 255 255 / 0.07);

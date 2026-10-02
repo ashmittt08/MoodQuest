@@ -9,10 +9,8 @@ type AuthStatus = "loading" | "authenticated" | "unauthenticated" | "offline";
 interface AuthContextValue {
   user: User | null;
   status: AuthStatus;
-  /** Why the user was signed out (e.g. expired session); shown on the login screen. */
   sessionMessage: string | null;
   offlineMessage: string | null;
-  /** True right after the user chose to log out (vs. being signed out by an expired session). */
   loggedOut: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -39,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSessionMessage(message);
   }, []);
 
-  // Restore the session after a page refresh.
   useEffect(() => {
     if (!tokenStorage.get()) return;
     let cancelled = false;
@@ -56,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (getStatus(error) === 401) {
           signOutLocally("Your session has expired. Please log in again.");
         } else {
-          // Keep the token: the server may just be temporarily unreachable.
           setOfflineMessage(getErrorMessage(error));
           setStatus("offline");
         }
@@ -91,10 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await authService.logout(); // revokes the token server-side
-    } catch {
-      /* still sign out locally if the server is unreachable */
-    } finally {
+      await authService.logout();
+    } catch {} finally {
       setLoggedOut(true);
       signOutLocally(null);
     }

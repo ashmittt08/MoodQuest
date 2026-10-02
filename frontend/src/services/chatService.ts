@@ -15,7 +15,6 @@ export const chatService = {
     return data;
   },
   async sendMessage(conversationId: number, content: string): Promise<ChatReply> {
-    // The assistant reply is produced by the backend (Phase 1 placeholder, Phase 2 LLM).
     const { data } = await api.post<ChatReply>(`/api/chat/conversations/${conversationId}/messages`, { content });
     return data;
   },

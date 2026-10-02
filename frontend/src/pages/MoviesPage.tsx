@@ -79,9 +79,6 @@ export function MoviesPage() {
                 </div>
               </section>
             )}
-            <p className="text-xs text-slate-500">
-              Trailers open on YouTube in a new tab. Posters and live data from TMDB are planned for Phase 2.
-            </p>
           </>
         )}
       </div>

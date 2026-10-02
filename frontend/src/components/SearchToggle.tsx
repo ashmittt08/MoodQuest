@@ -11,7 +11,6 @@ interface SearchToggleProps {
   placeholder: string;
 }
 
-/** Header search icon that expands into an input (Music / Movies / Games). */
 export function SearchToggle({ open, onOpenChange, value, onChange, placeholder }: SearchToggleProps) {
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {

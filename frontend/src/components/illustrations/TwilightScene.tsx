@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 
-/** Full-bleed atmospheric background for the welcome / auth screens. */
 export function TwilightScene() {
   const stars = useMemo(() => {
     let seed = 7;
@@ -47,18 +46,15 @@ export function TwilightScene() {
       <circle cx="730" cy="190" r="120" fill="url(#tw-glow)" opacity="0.5" />
       <circle cx="730" cy="190" r="30" fill="#fdf2f8" opacity="0.92" />
 
-      {/* Mountain layers */}
       <path d="M0 560 L140 430 L260 520 L400 380 L540 500 L660 410 L800 520 L940 400 L1080 500 L1200 440 V600 H0Z" fill="#6b21a8" opacity="0.75" />
       <path d="M0 600 L180 490 L320 570 L470 470 L620 570 L760 480 L900 575 L1050 495 L1200 560 V620 H0Z" fill="#4c1d95" />
       <path d="M0 625 L220 560 L420 615 L640 555 L860 618 L1060 565 L1200 600 V640 H0Z" fill="#2e1065" />
 
-      {/* Lake with reflection */}
       <rect y="630" width="1200" height="270" fill="url(#tw-lake)" />
       {Array.from({ length: 9 }, (_, i) => (
         <rect key={i} x={690 - i * 6} y={650 + i * 16} width={100 + i * 12} height="3" rx="1.5" fill="#fbcfe8" opacity={0.45 - i * 0.045} />
       ))}
 
-      {/* Shore, rock and meditating figure */}
       <path d="M0 760 C220 715 420 730 600 770 C690 790 730 830 770 900 H0Z" fill="#12082e" />
       <ellipse cx="480" cy="742" rx="120" ry="26" fill="#0d0624" />
       <g fill="#0a0420" transform="translate(150 0)">
@@ -68,7 +64,6 @@ export function TwilightScene() {
         <path d="M300 650 Q276 680 292 700" stroke="#0a0420" strokeWidth="12" fill="none" strokeLinecap="round" />
         <path d="M360 650 Q384 680 368 700" stroke="#0a0420" strokeWidth="12" fill="none" strokeLinecap="round" />
       </g>
-      {/* Small trees on the shore */}
       <g fill="#12082e">
         <path d="M70 760 L92 690 L114 760Z" />
         <path d="M110 752 L128 700 L146 752Z" />

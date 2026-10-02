@@ -1,4 +1,3 @@
-/** Recommendations, games and activities (catalog content + per-user progress). */
 import type { Request, Response } from "express";
 import type { z } from "zod";
 
@@ -18,7 +17,6 @@ import * as activityService from "../services/activity.service.ts";
 import * as gameService from "../services/game.service.ts";
 import * as recommendationService from "../services/recommendation.service.ts";
 
-// ---- recommendations ----
 export async function listRecommendations(req: Request, res: Response) {
   const { type } = query<z.infer<typeof recommendationListQuery>>(req);
   res.json(await recommendationService.getAll(currentUser(req).id, type));
@@ -38,7 +36,6 @@ export async function exerciseFeed(req: Request, res: Response) {
   res.json(await recommendationService.getExerciseFeed(currentUser(req).id));
 }
 
-// ---- games ----
 export async function listGames(req: Request, res: Response) {
   res.json(await gameService.listGames(currentUser(req).id, query<z.infer<typeof gameListQuery>>(req).category));
 }
@@ -58,7 +55,6 @@ export async function createGameSession(req: Request, res: Response) {
   res.status(201).json(await gameService.createSession(currentUser(req).id, gameId, score, duration));
 }
 
-// ---- activities ----
 export async function listActivities(req: Request, res: Response) {
   const { category } = query<z.infer<typeof activityListQuery>>(req);
   res.json(await activityService.activitiesWithProgress(currentUser(req).id, category));

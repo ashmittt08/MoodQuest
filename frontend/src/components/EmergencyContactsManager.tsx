@@ -14,7 +14,6 @@ export function telHref(phone: string): string {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
-/** List / add / remove trusted contacts. Used on the Emergency and Profile pages. */
 export function EmergencyContactsManager({ callable = false }: { callable?: boolean }) {
   const toast = useToast();
   const contacts = useAsync(() => userService.listContacts(), []);

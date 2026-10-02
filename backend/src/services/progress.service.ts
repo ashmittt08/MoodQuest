@@ -1,4 +1,3 @@
-/** Activity aggregation: streaks and per-day activity counts in the user's timezone. */
 import { prisma } from "../lib/prisma.ts";
 import type { AuthUser } from "../middleware/auth.ts";
 import { addDays, localDateKey, lowerBoundFor, safeTimeZone, todayKey } from "../utils/time.ts";
@@ -14,7 +13,6 @@ export interface Streak {
 
 export const userTimeZone = (user: AuthUser) => safeTimeZone(user.profile?.timezone);
 
-/** Timestamps of every streak-counting action, grouped by kind. */
 async function timestamps(userId: number, since?: Date): Promise<Record<Kind, Date[]>> {
   const after = since ? { gte: since } : undefined;
   const [moods, games, activities, journal, messages] = await Promise.all([
@@ -38,7 +36,6 @@ async function timestamps(userId: number, since?: Date): Promise<Record<Kind, Da
 
 export function computeStreak(activeDays: Set<string>, today: string): Streak {
   const activeToday = activeDays.has(today);
-  // A streak stays alive until the end of today, so start from yesterday if needed.
   let cursor = activeToday ? today : addDays(today, -1);
   let current = 0;
   while (activeDays.has(cursor)) {

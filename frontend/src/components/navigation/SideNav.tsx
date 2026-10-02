@@ -31,7 +31,6 @@ function SideLink({ item, danger }: { item: NavItem; danger?: boolean }) {
   );
 }
 
-/** Desktop navigation: same destinations as the bottom nav plus the explore pages. */
 export function SideNav() {
   const { user, logout } = useAuth();
   return (

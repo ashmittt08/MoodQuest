@@ -2,7 +2,6 @@ import { MoodFace } from "@/components/mood/MoodFace";
 import type { Mood } from "@/types";
 import { MOOD_BY_KEY } from "@/utils/moods";
 
-/** Explains why "For You" shows what it shows. */
 export function MoodContextChip({ mood }: { mood: Mood | null }) {
   if (!mood) {
     return <p className="text-xs text-slate-400">Check in your mood on Home to get personalised picks.</p>;

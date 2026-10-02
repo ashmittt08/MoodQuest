@@ -14,7 +14,6 @@ interface PillTabsProps<T extends string> {
   className?: string;
 }
 
-/** Horizontally scrollable pill tabs with the gradient active state from the UI reference. */
 export function PillTabs<T extends string>({ options, value, onChange, label, size = "md", className }: PillTabsProps<T>) {
   return (
     <div role="tablist" aria-label={label} className={cn("scrollbar-none -mx-1 flex gap-2 overflow-x-auto px-1 py-1", className)}>

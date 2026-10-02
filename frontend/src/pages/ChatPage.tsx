@@ -1,41 +1,28 @@
-import { ArrowLeft, History, LifeBuoy, MessageCircle, Mic, Phone, SendHorizontal, Video } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { ArrowLeft, History, LifeBuoy, MessageCircle } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { CompanionAvatar, MessageBubble, TypingIndicator, type DisplayMessage } from "@/components/chat/ChatParts";
+import { ChatComposer, MAX_MESSAGE_LENGTH } from "@/components/chat/ChatComposer";
 import { ConversationList } from "@/components/chat/ConversationList";
+import { SuggestionChips } from "@/components/chat/SuggestionChips";
+import { VoiceReplyToggle } from "@/components/chat/VoiceReplyToggle";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 import { useToast } from "@/contexts/ToastContext";
 import { useAsync } from "@/hooks/useAsync";
+import { useVoiceReplies } from "@/hooks/useVoiceReplies";
 import { getErrorMessage } from "@/lib/api";
-import { cn } from "@/lib/cn";
 import { chatService } from "@/services/chatService";
 import type { ConversationDetail } from "@/types";
 
-const MAX_LENGTH = 2000;
 
-/** Suggestions that are better served by opening a feature than by sending text. */
-const SUGGESTION_ROUTES: Record<string, string> = {
-  "Open emergency help": "/emergency",
-  "Try a breathing exercise": "/meditation?tab=breathing",
-  "Start box breathing": "/meditation?tab=breathing",
-  "Sleep meditation": "/meditation?tab=mindfulness",
-  "Play calming music": "/music",
-  "Play Lo-Fi Chill": "/music",
-  "Play calm piano": "/music",
-  "Play Stress Burst": "/games",
-  "Play a relaxing game": "/games",
-  "Play a fun game": "/games",
-  "Play a focus game": "/games",
-  "Write in my journal": "/journal",
-  "Suggest a comfort movie": "/movies",
-};
 
 export function ChatPage() {
   const toast = useToast();
+  const voice = useVoiceReplies();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeId = Number(searchParams.get("c")) || null;
@@ -62,7 +49,6 @@ export function ChatPage() {
     [setSearchParams],
   );
 
-  // Open the most recent conversation when none is selected.
   useEffect(() => {
     if (!activeId && conversations.data?.length) selectConversation(conversations.data[0].id, true);
   }, [activeId, conversations.data, selectConversation]);
@@ -82,9 +68,6 @@ export function ChatPage() {
     }
   }, []);
 
-  // Note: never clear `detail` just because no id is selected — React Router applies
-  // setSearchParams in a transition, so a freshly created conversation can render
-  // one frame before its ?c= id arrives. Deleting clears it explicitly instead.
   useEffect(() => {
     if (activeId && activeId !== detail?.id) void loadDetail(activeId);
   }, [activeId, detail?.id, loadDetail]);
@@ -123,8 +106,8 @@ export function ChatPage() {
       inputRef.current?.focus();
       return;
     }
-    if (content.length > MAX_LENGTH) {
-      setInputError(`Messages can be up to ${MAX_LENGTH} characters.`);
+    if (content.length > MAX_MESSAGE_LENGTH) {
+      setInputError(`Messages can be up to ${MAX_MESSAGE_LENGTH} characters.`);
       return;
     }
     setInputError(null);
@@ -142,21 +125,16 @@ export function ChatPage() {
           : current,
       );
       setSuggestions(reply.suggestions);
+      voice.speak(reply.assistant_message.content);
       void conversations.reload();
     } catch (error) {
-      setInput(content); // give the text back so nothing is lost
+      setInput(content);
       if (error instanceof Error && error.message === "no conversation") return;
       toast.error(getErrorMessage(error, "Your message wasn't sent. Please try again."));
     } finally {
       setPending(null);
       setSending(false);
     }
-  }
-
-  function handleSuggestion(text: string) {
-    const route = SUGGESTION_ROUTES[text];
-    if (route) navigate(route);
-    else void send(text);
   }
 
   async function handleDelete(id: number) {
@@ -173,13 +151,6 @@ export function ChatPage() {
       toast.error(getErrorMessage(error));
     }
   }
-
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    void send(input);
-  }
-
-  const phase2 = (feature: string) => toast.info(`${feature} will be available in Phase 2.`);
 
   const list = (
     <ConversationList
@@ -221,12 +192,13 @@ export function ChatPage() {
           <IconButton label="Conversation history" onClick={() => setHistoryOpen(true)} className="size-9 sm:size-10 lg:hidden">
             <History className="size-4.5" />
           </IconButton>
-          <IconButton label="Voice call (Phase 2)" onClick={() => phase2("Voice calls")} className="size-9 sm:size-10">
-            <Phone className="size-4.5" />
-          </IconButton>
-          <IconButton label="Video call (Phase 2)" onClick={() => phase2("Video calls")} className="size-9 sm:size-10">
-            <Video className="size-4.5" />
-          </IconButton>
+          <VoiceReplyToggle
+            supported={voice.supported}
+            enabled={voice.enabled}
+            speaking={voice.speaking}
+            onToggle={voice.toggle}
+            className="size-9 sm:size-10"
+          />
         </header>
 
         <p className="mb-2 flex items-center gap-1.5 text-[11px] whitespace-nowrap text-slate-500">
@@ -270,58 +242,22 @@ export function ChatPage() {
           )}
         </div>
 
-        {suggestions.length > 0 && (
-          <div className="scrollbar-none -mx-1 mt-3 flex gap-2 overflow-x-auto px-1" aria-label="Suggested prompts">
-            {suggestions.map((text) => (
-              <button
-                key={text}
-                onClick={() => handleSuggestion(text)}
-                disabled={sending}
-                className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-200 transition hover:border-primary-400/40 hover:bg-primary-500/10 disabled:opacity-50"
-              >
-                {text}
-              </button>
-            ))}
-          </div>
-        )}
+        <SuggestionChips suggestions={suggestions} onSend={(text) => void send(text)} disabled={sending} className="mt-3" />
 
-        <form onSubmit={handleSubmit} className="mt-3 flex items-end gap-2 pb-2">
-          <IconButton label="Voice input (Phase 2)" onClick={() => phase2("Voice input")} type="button">
-            <Mic className="size-4.5" />
-          </IconButton>
-          <div className="flex-1">
-            <label htmlFor="chat-input" className="sr-only">
-              Message
-            </label>
-            <textarea
-              id="chat-input"
-              ref={inputRef}
-              rows={1}
-              value={input}
-              maxLength={MAX_LENGTH}
-              onChange={(e) => {
-                setInput(e.target.value);
-                if (inputError) setInputError(null);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void send(input);
-                }
-              }}
-              placeholder="Type a message…"
-              aria-invalid={!!inputError || undefined}
-              className={cn(
-                "block max-h-32 min-h-11 w-full resize-none rounded-full border bg-ink-850/80 px-5 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-primary-400/60 focus:ring-2 focus:ring-primary-500/20",
-                inputError ? "border-rose-400/60" : "border-white/10",
-              )}
-            />
-            {inputError && <p className="mt-1 px-3 text-xs text-rose-300">{inputError}</p>}
-          </div>
-          <IconButton label="Send message" tone="primary" type="submit" disabled={sending || detailLoading || creating} className="size-11">
-            <SendHorizontal className="size-5" />
-          </IconButton>
-        </form>
+        <ChatComposer
+          id="chat-input"
+          value={input}
+          onChange={(value) => {
+            setInput(value);
+            if (inputError) setInputError(null);
+          }}
+          onSend={(text) => void send(text)}
+          error={inputError}
+          sendDisabled={sending || detailLoading || creating}
+          inputRef={inputRef}
+          onVoiceStart={voice.cancel}
+          className="mt-3 pb-2"
+        />
       </section>
 
       <Modal open={historyOpen} onClose={() => setHistoryOpen(false)} title="Conversations">

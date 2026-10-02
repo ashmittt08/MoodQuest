@@ -4,13 +4,13 @@
 
 MoodQuest is a full-stack web app where users check in their mood, talk to a supportive companion, play calming mini-games, follow guided breathing/yoga/mindfulness exercises, keep a private journal, get mood-aware music and movie suggestions, and track their progress over time. A manually accessible emergency page puts helplines and trusted contacts one tap away.
 
-This repository is **Phase 1: the working full-stack foundation**:
+Architecture:
 
 ```
 React + TypeScript  →  Node.js + Express + TypeScript  →  Prisma ORM  →  PostgreSQL
 ```
 
-Every screen talks to the real API and every piece of user data is stored in PostgreSQL. The advanced AI features (LLM chat, facial emotion recognition, voice, crisis detection) are **Phase 2** and have clearly marked integration points instead of fake output.
+Every screen talks to the real API and every piece of user data is stored in PostgreSQL. The chat companion uses a real LLM through Groq. Facial emotion recognition is not built yet; the camera page has the endpoint ready for it.
 
 ---
 
@@ -26,7 +26,7 @@ Every screen talks to the real API and every piece of user data is stored in Pos
 8. [Setup](#setup)
 9. [API reference](#api-reference)
 10. [Testing](#testing)
-11. [Future AI architecture (Phase 2)](#future-ai-architecture-phase-2)
+11. [Future work](#future-work)
 12. [Known limitations](#known-limitations)
 
 ---
@@ -45,12 +45,12 @@ Every screen talks to the real API and every piece of user data is stored in Pos
 
 ## Features
 
-| Screen | What works in Phase 1 |
+| Screen | What works |
 |---|---|
-| **Welcome / Auth** | Email + password registration and login (bcrypt + JWT), logout with server-side token revocation, session restore after refresh, protected routes, expired-session handling, rate-limited login. Google/Apple buttons are visible but show "not configured yet". |
+| **Welcome / Auth** | Email + password registration and login (bcrypt + JWT), logout with server-side token revocation, session restore after refresh, protected routes, expired-session handling, rate-limited login. Email is the only sign-in method. |
 | **Dashboard** | Time-of-day greeting with the signed-in user's name, six-mood check-in saved to PostgreSQL, current mood card and activity streak computed from real data, quick-access grid, notification bell with reminders derived from your check-ins. |
-| **AI Chat** | Conversations and messages persisted in PostgreSQL; replies are generated **by the backend** (Phase 1 rule-based placeholder). History, new/delete conversation, suggested prompts (some open the matching feature), empty-message validation. |
-| **Emotion Detection** | Live camera preview via the browser MediaDevices API (start/stop, camera picker, permission errors). A frame can be sent to `POST /api/emotion/analyze`, which honestly answers **501 Not Implemented** until the Phase 2 model is connected. No emotion values are invented. |
+| **AI Chat** | Conversations and messages persisted in PostgreSQL; replies are generated **by the backend** with a real LLM through Groq (or built-in keyword replies when no key is configured). History, new/delete conversation, suggested prompts (some open the matching feature), empty-message validation. |
+| **Emotion Detection** | Live camera preview via the browser MediaDevices API (start/stop, camera picker, permission errors). A frame can be sent to `POST /api/emotion/analyze`, which answers **501 Not Implemented** because no emotion model is connected yet. No emotion values are invented. |
 | **Progress & Analytics** | Mood trend, mood distribution, insights (improvement vs previous period / dominant mood), activity breakdown, recent games and exercises, journal stats, streak calendar; 7/30/90-day ranges; empty states instead of fake history. |
 | **Music / Movies** | Mood-aware recommendations from the database ("For You" uses your latest check-in), category tabs, search, featured card; links open YouTube. |
 | **Mini Games** | Six playable games — Breathing Flow, Color Match, Memory Challenge, Zen Garden, Stress Burst, Puzzle Mind. Every finished session is stored (`score`, `duration`, `completed_at`). |
@@ -78,7 +78,7 @@ Every screen talks to the real API and every piece of user data is stored in Pos
 │  controllers/   thin HTTP adapters                              │
 │  services/      business logic: auth, mood, progress, chat,     │
 │                 assistant*, recommendation*, emotion*, catalog  │
-│                 (* = Phase 2 provider interfaces)               │
+│                 (* = swappable provider interfaces)             │
 │  utils/serializers.ts   DB rows → stable API JSON (snake_case)  │
 └────────────────────────────────┬────────────────────────────────┘
                                  ▼
@@ -88,7 +88,7 @@ Every screen talks to the real API and every piece of user data is stored in Pos
 ```
 
 - **The API contract is stable.** Routes, payloads and the `{ "detail": "…" }` error format are what the React service layer expects; serializers keep database naming separate from the JSON the frontend sees.
-- **Provider interfaces for Phase 2.** `AssistantProvider`, `RecommendationProvider` and `EmotionAnalyzer` are small interfaces. Phase 1 ships `RuleBasedAssistant`, `CatalogProvider` and *no* emotion analyzer; Phase 2 swaps implementations via environment settings.
+- **Provider interfaces.** `AssistantProvider`, `RecommendationProvider` and `EmotionAnalyzer` are small interfaces. The app ships `GroqAssistant` (with `RuleBasedAssistant` as fallback), `CatalogProvider`, and no emotion analyzer yet; implementations are selected with environment settings.
 - **Authorization by ownership.** Every user-owned query filters by `userId`; another user's IDs return 404.
 - **Timezone-aware analytics.** Streaks and daily charts are grouped by the user's profile timezone.
 - **Catalog seeding.** Games, activities and recommendation records are reference content, seeded idempotently on startup (or with `npm run db:seed`).
@@ -133,7 +133,7 @@ MoodQuest/
 │   │   ├── lib/prisma.ts        Prisma client
 │   │   ├── routes/              one router per domain
 │   │   ├── controllers/         request → service → response
-│   │   ├── services/            business logic + Phase 2 provider interfaces
+│   │   ├── services/            business logic + provider interfaces
 │   │   ├── middleware/          auth, validate, rateLimit, errorHandler
 │   │   ├── schemas/             Zod request schemas
 │   │   └── utils/               serializers, time, moods, httpError
@@ -156,7 +156,7 @@ Defined in [`backend/prisma/schema.prisma`](backend/prisma/schema.prisma). Model
 |---|---|
 | `User` (`users`) | id, name, email (unique), passwordHash, avatarUrl, createdAt, updatedAt |
 | `Profile` (`user_profiles`) | id, userId (unique), preferredLanguage, timezone, notificationPreferences (JSONB) |
-| `MoodLog` (`mood_logs`) | id, userId, mood, score (1–5), source (`manual`; Phase 2: `chat`/`camera`/`voice`), note, createdAt |
+| `MoodLog` (`mood_logs`) | id, userId, mood, score (1–5), source (`manual`, reserved: `chat`/`camera`/`voice`), note, createdAt |
 | `Conversation` (`conversations`) | id, userId, title, createdAt, updatedAt |
 | `Message` (`messages`) | id, conversationId, sender (`user`/`assistant`), content, createdAt |
 | `Recommendation` (`recommendations`) | id, userId (NULL = shared catalog), type (`music`/`movie`), category, title, subtitle, description, imageUrl, externalUrl, moods (text[]), isFeatured, provider, externalId, extra (JSONB), createdAt |
@@ -184,7 +184,8 @@ All user-owned tables cascade on user deletion.
 | `JWT_SECRET` | ≥ 32 random characters — `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
 | `JWT_EXPIRES_IN_MINUTES` | Token lifetime (default 60) |
 | `EMERGENCY_NUMBER`, `HELPLINE_NAME`, `HELPLINE_NUMBER`, `HELPLINE_AVAILABILITY` | Emergency page resources — set them for your region |
-| `ASSISTANT_PROVIDER`, `EMOTION_PROVIDER` | Phase 2 switches (`rule_based`, `none` in Phase 1) |
+| `ASSISTANT_PROVIDER` | `groq` (real LLM) or `rule_based` (built-in replies, no key needed) |
+| `GROQ_API_KEY`, `GROQ_MODEL` | Groq key from <https://console.groq.com/keys> and model (default `openai/gpt-oss-120b`) |
 | `TEST_DATABASE_URL` | Separate database for the test suite (it is wiped between tests) |
 
 The server refuses to start with a clear message if a required variable is missing or invalid.
@@ -195,7 +196,7 @@ The server refuses to start with a clear message if a required variable is missi
 |---|---|
 | `VITE_API_URL` | API base URL, default `http://localhost:4000` |
 
-No secrets live in the frontend; all third-party keys (Phase 2) belong in `backend/.env`.
+No secrets live in the frontend; all third-party keys (such as `GROQ_API_KEY`) belong in `backend/.env`.
 
 ---
 
@@ -245,6 +246,7 @@ npm run dev                      # http://localhost:5173
 | `npm run db:migrate:dev -- --name <change>` | Create a new migration after editing `schema.prisma` |
 | `npm run db:seed` | Seed catalog content |
 | `npm test` | Run API tests against `TEST_DATABASE_URL` |
+| `npm run test:unit` | Run the tests that need no database (Groq provider with a mocked API) |
 | `npm run typecheck` | TypeScript check |
 
 ---
@@ -283,8 +285,8 @@ npm run dev                      # http://localhost:5173
 | POST | `/api/activities/:id/complete` 🔒 | Mark completed |
 | GET / POST | `/api/journal` 🔒 | List / create entries |
 | GET / PUT / DELETE | `/api/journal/:id` 🔒 | Read / update / delete an entry |
-| GET | `/api/emotion/status` 🔒 | Whether an emotion model is enabled (Phase 1: no) |
-| POST | `/api/emotion/analyze` 🔒 | Phase 2 integration point — returns **501** in Phase 1 |
+| GET | `/api/emotion/status` 🔒 | Whether an emotion model is enabled |
+| POST | `/api/emotion/analyze` 🔒 | Accepts a camera frame; returns **501** until an emotion model is connected |
 | GET | `/api/emergency/resources` | Emergency number + helplines (public) |
 | GET | `/health` | API + database health |
 
@@ -310,11 +312,11 @@ Frontend coverage: anonymous redirect, login validation & server errors, login �
 
 ---
 
-## Future AI architecture (Phase 2)
+## Future work
 
 | Capability | Where it plugs in |
 |---|---|
-| LLM companion (OpenAI/Gemini/Claude) | Implement `AssistantProvider` in `backend/src/services/assistant.service.ts`; select with `ASSISTANT_PROVIDER`. Conversation history is already passed in. |
+| LLM companion | **Done with Groq** (`GroqAssistant`). To use another model or provider, implement `AssistantProvider` in `backend/src/services/assistant.service.ts` and select it with `ASSISTANT_PROVIDER`. |
 | Facial emotion recognition (OpenCV + FER2013 CNN / DeepFace) | Implement `EmotionAnalyzer` in `services/emotion.service.ts` — e.g. call a small Python model service over HTTP. `/api/emotion/analyze` already validates and receives frames from the camera page; results can be stored as `MoodLog` rows with `source = "camera"`. |
 | Voice (Whisper / ElevenLabs) | Chat mic & call buttons are in place; add an audio endpoint and store transcripts as messages. |
 | Mood fusion | Combine `MoodLog` rows from `manual`, `chat`, `camera` and `voice` sources. |
@@ -325,9 +327,9 @@ Frontend coverage: anonymous redirect, login validation & server errors, login �
 
 ## Known limitations
 
-- **The Phase 1 chat companion is rule-based**, not an AI model. It matches keywords and returns supportive templates. As a safety fallback it points to the configured helpline when a message contains explicit self-harm phrases — this is **not** a risk detector and triggers no notifications.
-- **No emotion detection yet.** The camera preview works; analysis returns 501 until Phase 2.
-- **Google / Apple sign-in are placeholders** (OAuth not configured).
+- **The chat companion is a general-purpose LLM** (Groq) guided by a supportive system prompt; it can make mistakes and is not a therapist. Explicit self-harm phrases are intercepted by a keyword check that returns the configured helpline message instead of calling the model — this is **not** a risk classifier and triggers no notifications. If Groq is unreachable, replies fall back to the built-in keyword responses.
+- Chat messages are sent to Groq to generate replies; mention this in your privacy notes.
+- **No emotion detection yet.** The camera preview works; analysis returns 501 until a model is connected.
 - **Recommendation artwork** is generated per title (SVG scenes) because no licensed images are bundled; links open YouTube searches until Spotify/TMDB integration.
 - **Notification preferences are stored** but push/email delivery is not implemented; reminders appear in the in-app bell.
 - JWTs are kept in `localStorage` for simplicity; an httpOnly-cookie session would be stronger against XSS.

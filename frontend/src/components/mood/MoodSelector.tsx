@@ -13,7 +13,6 @@ interface MoodSelectorProps {
   disabled?: boolean;
 }
 
-/** The six-mood check-in row from the dashboard. Selection is persisted by the parent. */
 export function MoodSelector({ selected, saving, onSelect, disabled }: MoodSelectorProps) {
   return (
     <div role="radiogroup" aria-label="How are you feeling today?" className="grid grid-cols-6 gap-1 sm:gap-3">

@@ -4,7 +4,6 @@ export const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.rep
 
 const TOKEN_KEY = "moodquest.token";
 
-/** localStorage can throw (private mode, blocked storage) — never let that crash the app. */
 export const tokenStorage = {
   get(): string | null {
     try {
@@ -16,16 +15,12 @@ export const tokenStorage = {
   set(token: string) {
     try {
       localStorage.setItem(TOKEN_KEY, token);
-    } catch {
-      /* ignore */
-    }
+    } catch {}
   },
   clear() {
     try {
       localStorage.removeItem(TOKEN_KEY);
-    } catch {
-      /* ignore */
-    }
+    } catch {}
   },
 };
 
@@ -39,7 +34,6 @@ api.interceptors.request.use((config) => {
 
 let unauthorizedHandler: ((message: string) => void) | null = null;
 
-/** AuthContext registers this so an expired/revoked token logs the user out everywhere. */
 export function setUnauthorizedHandler(handler: ((message: string) => void) | null) {
   unauthorizedHandler = handler;
 }
@@ -65,13 +59,11 @@ api.interceptors.response.use(
 export const NETWORK_ERROR_MESSAGE =
   "Can't reach the MoodQuest server. Check your connection or make sure the backend is running.";
 
-/** Turn any thrown value into a short, user-safe message (never a stack trace). */
 export function getErrorMessage(error: unknown, fallback = "Something went wrong. Please try again."): string {
   if (axios.isAxiosError(error)) {
     if (error.code === "ECONNABORTED") return "The server took too long to respond. Please try again.";
     if (!error.response) return NETWORK_ERROR_MESSAGE;
     const { status, data } = error.response as { status: number; data?: { detail?: unknown } };
-    // 501 carries a deliberate, user-facing "not enabled yet" message.
     if (typeof data?.detail === "string" && (status < 500 || status === 501)) return data.detail;
     if (status === 503) return typeof data?.detail === "string" ? data.detail : "Service temporarily unavailable.";
     if (status >= 500) return "Something went wrong on our side. Please try again.";

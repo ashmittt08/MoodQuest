@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { HomeChatCard } from "@/components/chat/HomeChatCard";
 import { MoodCards } from "@/components/mood/MoodCardsRow";
 import { MoodSelector } from "@/components/mood/MoodSelector";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -72,6 +73,8 @@ export function DashboardPage() {
       ) : (
         <MoodCards stats={stats.data} loading={stats.loading && !stats.data} />
       )}
+
+      <HomeChatCard />
 
       <section aria-label="Quick Access">
         <SectionHeader title="Quick Access" />

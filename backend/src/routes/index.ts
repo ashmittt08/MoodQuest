@@ -1,7 +1,3 @@
-/**
- * API routes. Paths, payloads and status codes match the contract the React
- * service layer (frontend/src/services) was built against.
- */
 import { Router } from "express";
 
 import { requireAuth } from "../middleware/auth.ts";

@@ -4,11 +4,9 @@ import { MOOD_BY_KEY } from "@/utils/moods";
 interface MoodFaceProps {
   mood: Mood;
   className?: string;
-  /** Filled face (used for the selected state / current mood). */
   filled?: boolean;
 }
 
-/** Outlined mood faces matching the icons in the UI reference. */
 export function MoodFace({ mood, className, filled }: MoodFaceProps) {
   const color = MOOD_BY_KEY[mood].color;
   const stroke = filled ? "#0b1129" : color;

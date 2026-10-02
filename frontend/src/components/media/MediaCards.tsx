@@ -9,7 +9,6 @@ function openExternal(url: string | null) {
   if (url) window.open(url, "_blank", "noopener,noreferrer");
 }
 
-/** Large hero card ("Lo-Fi Chill", "Inside Out") with a glowing play button. */
 export function FeaturedCard({
   item,
   ctaLabel,
@@ -60,7 +59,6 @@ export function FeaturedCard({
   );
 }
 
-/** Small playlist / movie card used in the recommendation grids. */
 export function MediaCard({ item, portrait }: { item: Recommendation; portrait?: boolean }) {
   return (
     <button

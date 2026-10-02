@@ -1,8 +1,3 @@
-/**
- * Map database rows to the JSON shapes the React app expects (snake_case,
- * ISO-8601 UTC timestamps). Keeping this in one place means the API contract
- * is independent of the ORM's naming.
- */
 import type {
   Activity,
   ActivityCompletion,

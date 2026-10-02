@@ -65,7 +65,7 @@ describe("signed-in features", () => {
     await waitFor(() => expect(moodService.logMood).toHaveBeenCalledWith("calm"));
     expect(await screen.findByText("You seem relaxed today!")).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: /Calm/ })).toHaveAttribute("aria-checked", "true");
-    expect(screen.getByText("1")).toBeInTheDocument(); // streak days
+    expect(screen.getByText("1")).toBeInTheDocument();
   });
 
   it("highlights the active bottom-navigation item", async () => {
@@ -78,7 +78,6 @@ describe("signed-in features", () => {
 
   it("shows an honest empty state on Progress when there is no data", async () => {
     renderWithProviders(<AppRoutes />, { route: "/progress" });
-    // Progress is a lazily loaded chunk (Recharts), so allow extra time for the import.
     expect(await screen.findByText("Keep checking in to unlock your mood insights.", {}, { timeout: 15000 })).toBeInTheDocument();
     expect(screen.getByText(/Not enough data for insights yet/)).toBeInTheDocument();
   });

@@ -3,7 +3,6 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "../config/env.ts";
 import { PrismaClient } from "../generated/prisma/client.ts";
 
-/** Single shared Prisma client (PostgreSQL via the node-postgres driver adapter). */
 export const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
 });

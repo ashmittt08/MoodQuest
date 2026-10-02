@@ -17,7 +17,6 @@ export function notFoundHandler(_req: Request, res: Response) {
   res.status(404).json({ detail: "Not found" });
 }
 
-/** Turn every error into `{ detail }` JSON. Stack traces are logged, never returned. */
 export function errorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction) {
   if (error instanceof HttpError) {
     if (error.headers) res.set(error.headers);

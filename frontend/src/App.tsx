@@ -10,7 +10,6 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { WelcomePage } from "@/pages/WelcomePage";
 
-// Feature pages are split into their own chunks (charts, games and camera code load on demand).
 const ActivityPlayerPage = lazy(() => import("@/pages/ActivityPlayerPage").then((m) => ({ default: m.ActivityPlayerPage })));
 const ChatPage = lazy(() => import("@/pages/ChatPage").then((m) => ({ default: m.ChatPage })));
 const EmergencyPage = lazy(() => import("@/pages/EmergencyPage").then((m) => ({ default: m.EmergencyPage })));

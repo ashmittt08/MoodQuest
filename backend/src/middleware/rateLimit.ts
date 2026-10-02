@@ -2,7 +2,6 @@ import rateLimit from "express-rate-limit";
 
 import { env } from "../config/env.ts";
 
-/** Slow down password guessing on login/register. Disabled in tests. */
 export const authRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 30,

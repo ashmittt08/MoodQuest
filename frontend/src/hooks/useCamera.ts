@@ -19,7 +19,6 @@ function describeCameraError(error: unknown): string {
   }
 }
 
-/** Browser camera preview via the MediaDevices API. */
 export function useCamera() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -75,7 +74,6 @@ export function useCamera() {
     [deviceId, supported],
   );
 
-  /** Grab the current frame as a JPEG (used for the Phase 2 /analyze endpoint). */
   const captureFrame = useCallback(async (): Promise<Blob | null> => {
     const video = videoRef.current;
     if (!video || !video.videoWidth) return null;
@@ -86,7 +84,6 @@ export function useCamera() {
     return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.85));
   }, []);
 
-  // Always release the camera when leaving the page.
   useEffect(() => () => streamRef.current?.getTracks().forEach((track) => track.stop()), []);
 
   return { videoRef, status, error, devices, deviceId, supported, start, stop, captureFrame };

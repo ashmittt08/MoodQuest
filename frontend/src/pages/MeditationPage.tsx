@@ -26,7 +26,6 @@ export function MeditationPage() {
   const tabParam = params.get("tab") as Category | null;
   const category: Category = CATEGORIES.some((c) => c.value === tabParam) ? (tabParam as Category) : "all";
 
-  // "All" uses the mood-aware exercise recommendations; categories list the catalogue.
   const feed = useAsync<{ mood: Mood | null; items: Activity[] }>(async () => {
     if (category === "all") {
       const data = await recommendationService.getExercises();
@@ -36,7 +35,6 @@ export function MeditationPage() {
   }, [category]);
 
   const items = feed.data?.items ?? [];
-  // With a mood check-in the backend ranks the best match first; otherwise use the catalogue's featured item.
   const featured = feed.data?.mood ? items[0] : (items.find((a) => a.is_featured) ?? items[0]);
   const rest = items.filter((a) => a !== featured);
 

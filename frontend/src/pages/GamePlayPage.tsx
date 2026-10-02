@@ -65,7 +65,7 @@ export function GamePlayPage() {
 
   const handleFinish = useCallback(
     (outcome: GameResult) => {
-      if (finishedRef.current) return; // guard against double timers
+      if (finishedRef.current) return;
       finishedRef.current = true;
       bestBeforeRef.current = game.data?.best_score ?? null;
       setResult(outcome);

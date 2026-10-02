@@ -17,14 +17,12 @@ function paintSand(ctx: CanvasRenderingContext2D) {
   gradient.addColorStop(1, "#d6bf94");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
-  // Fine grain
   for (let i = 0; i < 2500; i++) {
     ctx.fillStyle = `rgba(120, 90, 50, ${Math.random() * 0.08})`;
     ctx.fillRect(Math.random() * WIDTH, Math.random() * HEIGHT, 1.5, 1.5);
   }
 }
 
-/** A relaxing sandbox: rake patterns and place stones. Score = calm points from your strokes. */
 export function ZenGardenGame({ onFinish }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const lastPoint = useRef<{ x: number; y: number } | null>(null);

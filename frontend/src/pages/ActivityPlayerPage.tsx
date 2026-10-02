@@ -13,7 +13,6 @@ import { getErrorMessage } from "@/lib/api";
 import { activityService } from "@/services/activityService";
 import { formatDuration, timeAgo } from "@/utils/date";
 
-/** Guided step-by-step player. Completion is persisted via POST /api/activities/{id}/complete. */
 export function ActivityPlayerPage() {
   const activityId = Number(useParams().activityId);
   const toast = useToast();
@@ -39,7 +38,6 @@ export function ActivityPlayerPage() {
     setPosState(next);
   };
 
-  // Initialise once per activity (a reload after completing must not reset the timer).
   useEffect(() => {
     const data = activity.data;
     if (!data || initialisedFor.current === data.id) return;

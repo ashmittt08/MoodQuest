@@ -24,7 +24,6 @@ function ActivityTooltip({ active, payload }: { active?: boolean; payload?: Arra
   );
 }
 
-/** Stacked daily activity. Legend is always shown (5 series). */
 export function ActivityChart({ daily }: { daily: DailyActivity[] }) {
   const short = daily.length <= 7;
   const data: Datum[] = daily.map((d) => ({ ...d, label: short ? shortWeekday(d.date) : shortDay(d.date) }));

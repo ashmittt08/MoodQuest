@@ -25,7 +25,6 @@ export const gameRoutes = Router();
 const gameId = idParam("gameId");
 
 gameRoutes.get("/", validate({ query: gameListQuery }), content.listGames);
-// Declared before "/:gameId" so "history" is not parsed as an id.
 gameRoutes.get("/history", validate({ query: gameHistoryQuery }), content.gameHistory);
 gameRoutes.get("/:gameId", validate({ params: gameId }), content.getGame);
 gameRoutes.post("/:gameId/sessions", validate({ params: gameId, body: gameSessionBody }), content.createGameSession);

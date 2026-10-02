@@ -8,13 +8,11 @@ interface PageHeaderProps {
   title: ReactNode;
   subtitle?: ReactNode;
   actions?: ReactNode;
-  /** Where the back arrow goes; defaults to browser history (or Home). */
   backTo?: string;
   showBack?: boolean;
   className?: string;
 }
 
-/** "← Title  [actions]" header used on every inner screen of the UI reference. */
 export function PageHeader({ title, subtitle, actions, backTo, showBack = true, className }: PageHeaderProps) {
   const navigate = useNavigate();
   const goBack = () => {

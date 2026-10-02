@@ -17,7 +17,6 @@ declare global {
   }
 }
 
-/** Require a valid, non-revoked bearer token and load the user. */
 export async function requireAuth(req: Request, _res: Response, next: NextFunction) {
   const header = req.headers.authorization ?? "";
   const [scheme, token] = header.split(" ");
@@ -45,7 +44,6 @@ export async function requireAuth(req: Request, _res: Response, next: NextFuncti
   next();
 }
 
-/** The authenticated user (only call after `requireAuth`). */
 export function currentUser(req: Request): AuthUser {
   if (!req.user) throw unauthorized("Not authenticated");
   return req.user;

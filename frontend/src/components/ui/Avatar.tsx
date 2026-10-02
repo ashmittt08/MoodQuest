@@ -21,7 +21,6 @@ function initials(name: string): string {
   return ((parts[0]?.[0] ?? "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase() || "?";
 }
 
-/** User avatar: profile image when set, otherwise gradient initials. */
 export function Avatar({ name, src, size = "md", className }: AvatarProps) {
   const [failed, setFailed] = useState(false);
   return (

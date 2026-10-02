@@ -16,7 +16,6 @@ function hash(text: string): number {
   return h >>> 0;
 }
 
-/** Deterministic pseudo-random generator so a given title always renders the same scene. */
 function rng(seed: number) {
   let s = seed || 1;
   return () => {
@@ -192,7 +191,6 @@ interface ArtworkProps {
   children?: ReactNode;
 }
 
-/** Card artwork: the record's image_url when provided, otherwise a generated scene. */
 export function Artwork({ seed, kind, imageUrl, className, children }: ArtworkProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const value = hash(seed);

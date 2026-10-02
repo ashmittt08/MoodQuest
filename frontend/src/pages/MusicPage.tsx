@@ -80,9 +80,6 @@ export function MusicPage() {
                 </div>
               </section>
             )}
-            <p className="text-xs text-slate-500">
-              Playlists open on YouTube in a new tab. Direct Spotify playback is planned for Phase 2.
-            </p>
           </>
         )}
       </div>

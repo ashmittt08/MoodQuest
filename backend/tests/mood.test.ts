@@ -70,8 +70,8 @@ describe("mood", () => {
 
   it("reports improvement against the previous period", async () => {
     const account = await register();
-    await addMood(account.user.id, "sad", 10); // previous week, score 1
-    await addMood(account.user.id, "calm", 1); // this week, score 4
+    await addMood(account.user.id, "sad", 10);
+    await addMood(account.user.id, "calm", 1);
     const s = await stats(account.headers);
     expect(s.insight.kind).toBe("improved");
     expect(s.insight.change_percent).toBe(300);
@@ -80,7 +80,6 @@ describe("mood", () => {
   it("counts consecutive days for the streak", async () => {
     const account = await register();
     for (const daysAgo of [1, 2, 3, 6, 7]) await addMood(account.user.id, "calm", daysAgo);
-    // Today not logged yet: the streak from yesterday is still alive.
     expect((await stats(account.headers)).streak).toEqual({ current: 3, longest: 3, active_today: false });
 
     await api().post("/api/mood").set(account.headers).send({ mood: "happy" });

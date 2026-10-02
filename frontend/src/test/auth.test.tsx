@@ -12,6 +12,9 @@ import { emptyStats, renderWithProviders, testUser } from "./utils";
 vi.mock("@/services/authService", () => ({
   authService: { login: vi.fn(), register: vi.fn(), logout: vi.fn(), me: vi.fn() },
 }));
+vi.mock("@/services/chatService", () => ({
+  chatService: { listConversations: vi.fn().mockResolvedValue([]), createConversation: vi.fn(), getConversation: vi.fn(), sendMessage: vi.fn(), deleteConversation: vi.fn() },
+}));
 vi.mock("@/services/moodService", () => ({
   moodService: { getMoodStats: vi.fn(), logMood: vi.fn(), getProgressSummary: vi.fn(), getMoods: vi.fn() },
 }));
@@ -24,7 +27,7 @@ describe("authentication flows", () => {
   it("redirects anonymous visitors from the dashboard to the welcome screen", async () => {
     renderWithProviders(<AppRoutes />, { route: "/" });
     expect(await screen.findByText(/Your AI Companion/)).toBeInTheDocument();
-    expect(screen.getByText("Continue with Google")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign up with Email" })).toBeInTheDocument();
   });
 
   it("validates the login form before calling the API", async () => {

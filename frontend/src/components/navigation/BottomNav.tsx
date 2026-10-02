@@ -4,7 +4,6 @@ import { cn } from "@/lib/cn";
 
 import { PRIMARY_NAV } from "./navItems";
 
-/** Mobile/tablet bottom navigation: Home · Chat · Games · Progress · Profile. */
 export function BottomNav() {
   return (
     <nav

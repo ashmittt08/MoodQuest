@@ -3,8 +3,6 @@ import { env } from "./config/env.ts";
 import { prisma } from "./lib/prisma.ts";
 import { seedCatalog } from "./services/catalog.service.ts";
 
-// Keep catalog content (games, activities, recommendations) in sync.
-// If the database is unreachable the API still starts; /health reports it.
 try {
   await seedCatalog(prisma);
 } catch (error) {

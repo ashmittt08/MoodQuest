@@ -39,7 +39,6 @@ function dominant(logs: MoodLog[]): string | null {
   const counts = new Map<string, number>();
   for (const log of logs) counts.set(log.mood, (counts.get(log.mood) ?? 0) + 1);
   const top = Math.max(...counts.values());
-  // Ties resolve to the most recent of the tied moods.
   for (let i = logs.length - 1; i >= 0; i--) if (counts.get(logs[i].mood) === top) return logs[i].mood;
   return null;
 }

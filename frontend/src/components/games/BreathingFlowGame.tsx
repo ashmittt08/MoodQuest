@@ -23,10 +23,6 @@ function phaseAt(elapsed: number) {
   return { phase: PHASES[0], remaining: PHASES[0].ms };
 }
 
-/**
- * Hold the orb while breathing in and holding, release while breathing out.
- * Score = how closely you stayed in sync with the breathing rhythm (0–100).
- */
 export function BreathingFlowGame({ onFinish }: GameProps) {
   const [running, setRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);

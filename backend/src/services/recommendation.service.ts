@@ -1,10 +1,3 @@
-/**
- * Mood-aware recommendations.
- *
- * Phase 1 reads from the curated catalog in PostgreSQL (`CatalogProvider`).
- * Phase 2 can add Spotify / TMDB providers implementing `RecommendationProvider`;
- * API keys stay on the server and the response contract stays the same.
- */
 import type { Recommendation } from "../generated/prisma/client.ts";
 import { prisma } from "../lib/prisma.ts";
 import { serializeRecommendation } from "../utils/serializers.ts";
@@ -33,7 +26,6 @@ class CatalogProvider implements RecommendationProvider {
 }
 
 function getProvider(_type: RecommendationType): RecommendationProvider {
-  // Phase 2: return a SpotifyProvider for music / TMDBProvider for movies when configured.
   return new CatalogProvider();
 }
 
@@ -47,7 +39,6 @@ function matchesQuery(item: Recommendation, query: string): boolean {
   return haystack.includes(query.toLowerCase());
 }
 
-/** Items suited to the user's mood first; pad with the rest so the page is never sparse. */
 function personalise(items: Recommendation[], mood: string | null): Recommendation[] {
   if (!mood) return items;
   const matching = items.filter((i) => i.moods.includes(mood));
@@ -86,8 +77,6 @@ export async function getAll(userId: number, type?: RecommendationType) {
 export async function getExerciseFeed(userId: number) {
   const mood = (await latestMood(userId))?.mood ?? null;
   const activities = await activitiesWithProgress(userId);
-  // This feed backs the "All" tab, so nothing is dropped: activities suited to the
-  // latest mood are ranked first (stable sort keeps featured-first order), then the rest.
   if (mood) activities.sort((a, b) => Number(!a.moods.includes(mood)) - Number(!b.moods.includes(mood)));
   return { mood_context: mood, items: activities };
 }

@@ -1,4 +1,3 @@
-/** Emotion (Phase 2 placeholder), emergency resources and health. */
 import type { Request, Response } from "express";
 
 import { env } from "../config/env.ts";
@@ -19,11 +18,10 @@ export async function analyzeEmotion(req: Request, res: Response) {
   if (!image.size) throw new HttpError(400, "Image is empty");
 
   const analyzer = emotionService.getEmotionAnalyzer();
-  if (!analyzer) throw new HttpError(501, emotionService.PHASE_2_MESSAGE);
+  if (!analyzer) throw new HttpError(501, emotionService.ANALYSIS_UNAVAILABLE_MESSAGE);
   res.json(await analyzer.analyze(image.buffer, image.mimetype));
 }
 
-// Public on purpose: support information must be reachable even when logged out.
 export function emergencyResources(_req: Request, res: Response) {
   res.json({
     emergency_number: env.EMERGENCY_NUMBER,

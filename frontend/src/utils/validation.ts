@@ -1,5 +1,3 @@
-// Client-side checks mirror the backend rules so users get instant feedback.
-
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function validateEmail(email: string): string | null {

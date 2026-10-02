@@ -31,7 +31,7 @@ export function LoginPage() {
     setFormError(null);
     clearSessionMessage();
     try {
-      await login(email.trim(), password); // PublicOnlyRoute then redirects to the original page
+      await login(email.trim(), password);
     } catch (error) {
       setFormError(getErrorMessage(error, "Couldn't log you in. Please try again."));
     } finally {

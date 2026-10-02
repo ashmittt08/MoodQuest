@@ -9,7 +9,6 @@ export const CATEGORY_STYLE: Record<Activity["category"], { icon: LucideIcon; co
   mindfulness: { icon: Waves, color: "#a78bfa" },
 };
 
-/** "Box Breathing — 4 min · Anxiety  ▶" row from the Meditation screen. */
 export function ActivityRow({ activity }: { activity: Activity }) {
   const style = CATEGORY_STYLE[activity.category] ?? CATEGORY_STYLE.mindfulness;
   const Icon = style.icon;

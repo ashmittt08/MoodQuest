@@ -10,7 +10,6 @@ interface Reminder {
   text: string;
 }
 
-/** In-app reminders derived from the user's real check-in data. */
 function remindersFrom(stats: MoodStats | null): Reminder[] {
   if (!stats) return [];
   const reminders: Reminder[] = [];

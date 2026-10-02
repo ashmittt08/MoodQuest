@@ -58,15 +58,15 @@ describe("recommendations", () => {
 });
 
 describe("emotion, emergency, health, CORS", () => {
-  it("keeps emotion analysis an honest Phase 2 placeholder", async () => {
+  it("reports that emotion analysis is not enabled", async () => {
     const { headers } = await register();
     const status = (await api().get("/api/emotion/status").set(headers)).body;
-    expect(status).toMatchObject({ available: false, phase: 2 });
+    expect(status).toMatchObject({ available: false });
 
     const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0x00, 0x01]);
     const res = await api().post("/api/emotion/analyze").set(headers).attach("image", jpeg, { filename: "frame.jpg", contentType: "image/jpeg" });
     expect(res.status).toBe(501);
-    expect(res.body.detail).toContain("Phase 2");
+    expect(res.body.detail).toContain("isn't enabled");
 
     const text = await api().post("/api/emotion/analyze").set(headers).attach("image", Buffer.from("hello"), { filename: "notes.txt", contentType: "text/plain" });
     expect(text.status).toBe(415);

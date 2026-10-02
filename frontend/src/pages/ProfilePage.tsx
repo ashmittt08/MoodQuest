@@ -128,8 +128,7 @@ function NotificationSettings({ profile, onSaved }: { profile: Profile; onSaved:
       <Toggle label="Weekly progress report" description="A summary of your week" checked={prefs.weekly_report} disabled={saving} onChange={(v) => void update({ ...prefs, weekly_report: v })} />
       <Toggle label="Game reminders" description="Suggestions to take a playful break" checked={prefs.game_reminders} disabled={saving} onChange={(v) => void update({ ...prefs, game_reminders: v })} />
       <p className="pt-3 text-xs text-slate-500">
-        Preferences are saved to your account. Push/email delivery will be enabled in a later phase; for now reminders
-        appear in the in-app notification bell.
+        Preferences are saved to your account. Reminders show up in the notification bell.
       </p>
     </div>
   );
@@ -189,7 +188,7 @@ export function ProfilePage() {
 
   async function handleLogout() {
     setLoggingOut(true);
-    await logout(); // the route guard then shows the welcome screen
+    await logout();
   }
 
   if (profile.loading && !profile.data) return <LoadingState label="Loading profile…" />;

@@ -1,6 +1,5 @@
 export interface GameResult {
   score: number;
-  /** Seconds played. */
   duration: number;
 }
 

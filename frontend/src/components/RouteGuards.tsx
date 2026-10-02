@@ -33,34 +33,29 @@ function Offline() {
   );
 }
 
-/** Only for signed-in users; everyone else goes to the welcome screen. */
 export function ProtectedRoute() {
   const { status, loggedOut } = useAuth();
   const location = useLocation();
   if (status === "loading") return <Splash />;
   if (status === "offline") return <Offline />;
   if (status === "unauthenticated") {
-    // A deliberate logout or a visit to "/" shows the welcome screen; deep links go to login and come back.
     if (loggedOut || location.pathname === "/") return <Navigate to="/welcome" replace />;
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
   }
   return <AppLayout />;
 }
 
-/** Welcome / login / register: signed-in users are sent to the dashboard. */
 export function PublicOnlyRoute() {
   const { status } = useAuth();
   const location = useLocation();
   if (status === "loading") return <Splash />;
   if (status === "authenticated") {
-    // Return users to the page they were sent away from (set by ProtectedRoute).
     const from = (location.state as { from?: string } | null)?.from;
     return <Navigate to={from && from.startsWith("/") ? from : "/"} replace />;
   }
   return <Outlet />;
 }
 
-/** Pages anyone can open (Emergency). Signed-in users keep their navigation. */
 export function OpenRoute() {
   const { status } = useAuth();
   if (status === "loading") return <Splash />;

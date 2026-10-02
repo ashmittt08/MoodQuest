@@ -10,7 +10,6 @@ export function firstName(name: string | undefined | null): string {
   return (name ?? "").trim().split(/\s+/)[0] || "there";
 }
 
-/** "2026-09-28" (a calendar date from the API) → Date at local midnight. */
 export function parseDay(day: string): Date {
   const [y, m, d] = day.split("-").map(Number);
   return new Date(y, m - 1, d);

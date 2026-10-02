@@ -67,7 +67,7 @@ describe("users", () => {
     const url = "/api/users/emergency-contacts";
     const first = await api().post(url).set(account.headers).send({ name: "Mom", phone: "+91 98765 43210" });
     expect(first.status).toBe(201);
-    expect(first.body.is_primary).toBe(true); // first contact becomes primary
+    expect(first.body.is_primary).toBe(true);
 
     const second = (
       await api()

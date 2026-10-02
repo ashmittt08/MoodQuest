@@ -46,7 +46,6 @@ function MoodDot({ cx, cy, payload }: DotProps) {
   return <circle cx={cx} cy={cy} r={5} fill={MOOD_CHART_COLORS[payload.mood]} stroke={CHART_SURFACE} strokeWidth={2} />;
 }
 
-/** Single-series mood trend: daily average score (1–5), dots tinted by that day's dominant mood. */
 export function MoodTrendChart({ trend }: { trend: TrendPoint[] }) {
   const daily = trend.length <= 7;
   const data: Datum[] = trend.map((point) => ({

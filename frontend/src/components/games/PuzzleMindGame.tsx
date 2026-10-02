@@ -20,7 +20,6 @@ function neighbours(index: number): number[] {
   return result;
 }
 
-/** Shuffle by applying random legal moves, so the puzzle is always solvable. */
 function shuffled(): number[] {
   const tiles = [...SOLVED];
   let blank = tiles.indexOf(0);
@@ -35,7 +34,6 @@ function shuffled(): number[] {
   return tiles.join() === SOLVED.join() ? shuffled() : tiles;
 }
 
-/** 3×3 sliding tile puzzle. */
 export function PuzzleMindGame({ onFinish }: GameProps) {
   const [started, setStarted] = useState(false);
   const [tiles, setTiles] = useState<number[]>(SOLVED);

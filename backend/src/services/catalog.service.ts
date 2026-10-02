@@ -1,10 +1,3 @@
-/**
- * Curated catalog content (games, activities, music & movie recommendations).
- *
- * Shared reference content, not user data. `seedCatalog` is idempotent: it inserts
- * missing rows and refreshes existing ones, so it runs safely on every startup and
- * via `npm run db:seed`.
- */
 import type { Prisma, PrismaClient } from "../generated/prisma/client.ts";
 
 const youtubeSearch = (query: string) =>

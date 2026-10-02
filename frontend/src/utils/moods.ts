@@ -4,7 +4,6 @@ export interface MoodMeta {
   key: Mood;
   label: string;
   color: string;
-  /** Short reflection shown on the Current Mood card. */
   message: string;
 }
 
@@ -23,7 +22,6 @@ export function moodMeta(mood: Mood | null | undefined): MoodMeta | null {
   return mood ? MOOD_BY_KEY[mood] ?? null : null;
 }
 
-/** Labels for the 1–5 mood score axis used by trend charts. */
 export const SCORE_LABELS: Record<number, string> = {
   1: "Low",
   2: "Uneasy",

@@ -26,7 +26,6 @@ const TABLES = [
   "activities",
 ];
 
-/** Fresh database + catalog before every test. */
 export function useFreshDatabase() {
   beforeEach(async () => {
     await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${TABLES.map((t) => `"${t}"`).join(", ")} RESTART IDENTITY CASCADE`);
@@ -61,7 +60,6 @@ export async function register(
   return { user: response.body.user, token, headers: { Authorization: `Bearer ${token}` }, email, password };
 }
 
-/** Insert a mood directly with a backdated timestamp. */
 export async function addMood(userId: number, mood: Mood, daysAgo: number) {
   await prisma.moodLog.create({
     data: {

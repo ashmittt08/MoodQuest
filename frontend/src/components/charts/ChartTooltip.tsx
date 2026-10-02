@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-/** Dark glass tooltip shell shared by all charts. Text uses ink tokens, never series colors. */
 export function TooltipCard({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="glass-strong min-w-36 px-3 py-2 text-xs shadow-2xl">

@@ -14,7 +14,6 @@ const TONES = {
   danger: "bg-rose-500/15 text-rose-300 border border-rose-400/30 hover:bg-rose-500/25",
 };
 
-/** Round icon-only button (header actions, call buttons, play buttons). */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
   { label, children, tone = "default", className, type = "button", ...rest },
   ref,

@@ -16,7 +16,6 @@ import { getErrorMessage } from "@/lib/api";
 import { cn } from "@/lib/cn";
 import { emotionService } from "@/services/emotionService";
 
-/** Labels the Phase 2 model will score. Shown without values until the model exists. */
 const EMOTIONS = ["Happy", "Neutral", "Sad", "Angry", "Fear", "Surprise"];
 
 function FaceFrame({ active }: { active: boolean }) {
@@ -53,7 +52,6 @@ export function EmotionPage() {
     try {
       await emotionService.analyzeFrame(frame);
     } catch (error) {
-      // 501 is the expected Phase 1 answer: the integration point exists, the model does not.
       setAnalysisNote(getErrorMessage(error));
     } finally {
       setAnalyzing(false);
@@ -76,7 +74,7 @@ export function EmotionPage() {
         <p>
           <strong className="font-semibold">Preview only.</strong>{" "}
           {status.data?.message ??
-            "The camera preview works now. Facial emotion analysis will be connected in Phase 2 — no emotions are detected or stored yet."}
+            "Emotion analysis isn't enabled yet, so nothing is detected or stored. The camera preview works."}
         </p>
       </div>
 
@@ -110,16 +108,16 @@ export function EmotionPage() {
           )}
         </div>
 
-        <div className="glass flex flex-col gap-1 p-2.5 sm:p-3" aria-label="Emotion probabilities (Phase 2)">
+        <div className="glass flex flex-col gap-1 p-2.5 sm:p-3" aria-label="Emotion probabilities">
           {EMOTIONS.map((emotion) => (
             <div key={emotion} className="flex items-center justify-between rounded-xl px-2 py-2 text-xs sm:text-sm">
               <span className="text-slate-300">{emotion}</span>
-              <span className="text-slate-500 tabular-nums" title="Available when the Phase 2 model is connected">
+              <span className="text-slate-500 tabular-nums" title="Shown when emotion analysis is enabled">
                 —
               </span>
             </div>
           ))}
-          <p className="mt-auto px-2 pb-1 text-[10px] text-slate-500">Scores appear once the model is connected.</p>
+          <p className="mt-auto px-2 pb-1 text-[10px] text-slate-500">Scores appear when emotion analysis is enabled.</p>
         </div>
       </div>
 
@@ -149,7 +147,7 @@ export function EmotionPage() {
           compact
           icon={ChartSpline}
           title="No live data yet"
-          message="A live emotion trend will appear here once Phase 2 analysis is enabled."
+          message="A live emotion trend will appear here when emotion analysis is enabled."
         />
       </Card>
 
@@ -191,7 +189,7 @@ export function EmotionPage() {
           <p className="text-sm text-slate-400">Start the camera once to choose between available cameras.</p>
         )}
         <p className="mt-4 text-xs text-slate-500">
-          Video stays in your browser. In Phase 1 nothing is recorded; a frame is only sent to the server when you press
+          Video stays in your browser and nothing is recorded. A frame is only sent to the server when you press
           "Send frame to analyzer".
         </p>
       </Modal>

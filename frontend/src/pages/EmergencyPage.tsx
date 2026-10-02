@@ -12,10 +12,6 @@ import { useAsync } from "@/hooks/useAsync";
 import { emergencyService } from "@/services/emergencyService";
 import type { EmergencyResources } from "@/types";
 
-/**
- * Used only if the server can't be reached: support information must never depend
- * on the backend being up. Mirrors the backend defaults (configurable there).
- */
 const OFFLINE_FALLBACK: EmergencyResources = {
   emergency_number: "112",
   helplines: [{ name: "Tele-MANAS National Mental Health Helpline", number: "14416", availability: "Available 24/7" }],
@@ -153,7 +149,7 @@ export function EmergencyPage() {
       <Modal open={sheet === "counselor"} onClose={() => setSheet(null)} title="Chat with a Counselor">
         <div className="space-y-4 text-sm text-slate-300">
           <p>
-            In-app chat with a live counselor is planned for a later phase. Right now, trained counselors are available
+            Trained counselors are available
             by phone{helpline ? ` at ${helpline.name}` : ""}.
           </p>
           {helpline && (

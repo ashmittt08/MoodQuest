@@ -58,7 +58,7 @@ describe("activities and progress", () => {
   it("lists activities, completes one and persists it", async () => {
     const { headers } = await register();
     const activities = (await api().get("/api/activities").set(headers)).body;
-    expect(activities[0].title).toBe("5 Min Breathing Exercise"); // featured first
+    expect(activities[0].title).toBe("5 Min Breathing Exercise");
     const totalSeconds = activities[0].steps.reduce((sum: number, s: { seconds: number }) => sum + s.seconds, 0);
     expect(totalSeconds).toBeGreaterThan(200);
 

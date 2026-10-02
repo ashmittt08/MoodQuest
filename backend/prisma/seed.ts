@@ -1,4 +1,3 @@
-/** `npm run db:seed` — load catalog content. The API also does this on startup. */
 import { prisma } from "../src/lib/prisma.ts";
 import { ACTIVITIES, GAMES, RECOMMENDATIONS, seedCatalog } from "../src/services/catalog.service.ts";
 

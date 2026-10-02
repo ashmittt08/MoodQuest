@@ -17,7 +17,6 @@ function SliceTooltip({ active, payload }: { active?: boolean; payload?: Array<{
   );
 }
 
-/** Donut + labeled legend. The legend (name + %) is the required secondary encoding. */
 export function MoodDistributionChart({ distribution }: { distribution: DistributionItem[] }) {
   const byMood = Object.fromEntries(distribution.map((d) => [d.mood, d]));
   const ordered = DONUT_ORDER.map((mood) => byMood[mood]).filter(Boolean) as DistributionItem[];

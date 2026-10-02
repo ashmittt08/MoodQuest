@@ -6,7 +6,6 @@ export interface GameVisual {
   glow: string;
 }
 
-/** Card art per game, matching the gradient tiles in the UI reference. */
 export const GAME_VISUALS: Record<string, GameVisual> = {
   "breathing-flow": { icon: Flower2, gradient: "linear-gradient(145deg, #0f766e, #14b8a6 55%, #5eead4)", glow: "#2dd4bf" },
   "color-match": { icon: Palette, gradient: "linear-gradient(145deg, #c2410c, #f97316 55%, #fdba74)", glow: "#fb923c" },

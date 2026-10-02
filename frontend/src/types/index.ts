@@ -1,4 +1,3 @@
-// Shapes returned by the MoodQuest Node/Express API (see backend/src/utils/serializers.ts).
 
 export type Mood = "happy" | "calm" | "stressed" | "sad" | "angry" | "anxious";
 
@@ -255,7 +254,6 @@ export interface ProgressSummary {
 export interface EmotionStatus {
   available: boolean;
   provider: string | null;
-  phase: number;
   message: string;
 }
 

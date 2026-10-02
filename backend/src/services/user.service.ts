@@ -55,7 +55,6 @@ export async function updateProfile(user: AuthUser, update: ProfileUpdate) {
   return serializeProfile(updated, updated.profile!);
 }
 
-// ---- Emergency contacts ("Contact Family" on the Emergency page) ----
 
 export interface ContactInput {
   name: string;
@@ -83,7 +82,6 @@ export async function createContact(userId: number, input: ContactInput) {
   if (existing >= MAX_EMERGENCY_CONTACTS) throw badRequest(`You can save up to ${MAX_EMERGENCY_CONTACTS} contacts`);
   const isPrimary = input.is_primary || existing === 0;
   const contact = await prisma.$transaction(async (tx) => {
-    // Only one primary contact per user.
     if (isPrimary) await tx.emergencyContact.updateMany({ where: { userId }, data: { isPrimary: false } });
     return tx.emergencyContact.create({
       data: { userId, name: input.name, phone: input.phone, relationship: input.relationship ?? null, isPrimary },

@@ -10,7 +10,6 @@ import { DEFAULT_NOTIFICATION_PREFERENCES, serializeUser } from "../utils/serial
 import { isValidTimeZone } from "../utils/time.ts";
 import type { User } from "../generated/prisma/client.ts";
 
-// Fast hashing keeps the test suite quick; production uses a strong work factor.
 const BCRYPT_ROUNDS = env.isTest ? 4 : 12;
 let dummyHash: string | null = null;
 
@@ -40,7 +39,6 @@ export async function register(input: { name: string; email: string; password: s
     });
     return tokenResponse(user);
   } catch (error) {
-    // A concurrent registration with the same email won the race.
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") throw conflict(DUPLICATE_EMAIL);
     throw error;
   }
@@ -48,7 +46,6 @@ export async function register(input: { name: string; email: string; password: s
 
 export async function login(email: string, password: string) {
   const user = await prisma.user.findUnique({ where: { email } });
-  // Compare against a dummy hash for unknown emails so response time doesn't reveal which accounts exist.
   dummyHash ??= await hashPassword("timing-equaliser-not-a-password");
   const valid = await verifyPassword(password, user?.passwordHash ?? dummyHash);
   if (!user || !valid) throw unauthorized("Incorrect email or password");
@@ -62,7 +59,6 @@ export async function logout(token: AccessTokenPayload) {
       update: {},
       create: { jti: token.jti, expiresAt: new Date(token.exp * 1000) },
     }),
-    // Housekeeping: revoked tokens are useless once they would have expired.
     prisma.revokedToken.deleteMany({ where: { expiresAt: { lt: new Date() } } }),
   ]);
 }

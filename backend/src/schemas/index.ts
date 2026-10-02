@@ -1,4 +1,3 @@
-/** Request validation schemas (mirroring the rules the React forms already enforce). */
 import { z } from "zod";
 
 import { MOODS } from "../utils/moods.ts";
@@ -33,7 +32,6 @@ const limit = (max: number, fallback: number) => z.coerce.number().int().min(1).
 const offset = z.coerce.number().int().min(0).default(0);
 const days = z.object({ days: z.coerce.number().int().min(1).max(365).default(7) });
 
-// ---- auth ----
 export const registerBody = z.object({
   name: personName,
   email,
@@ -46,7 +44,6 @@ export const changePasswordBody = z.object({
   new_password: newPassword,
 });
 
-// ---- users ----
 export const notificationPreferences = z.object({
   daily_reminder: z.boolean().default(true),
   weekly_report: z.boolean().default(true),
@@ -67,12 +64,10 @@ export const contactBody = z.object({
   is_primary: z.boolean().default(false),
 });
 
-// ---- mood / progress ----
 export const moodBody = z.object({ mood, note: z.string().max(1000).nullish() });
 export const moodListQuery = z.object({ limit: limit(500, 50), offset });
 export const daysQuery = days;
 
-// ---- chat ----
 export const conversationBody = z.object({ title: z.string().max(120).nullish() });
 export const messageBody = z.object({
   content: z
@@ -82,7 +77,6 @@ export const messageBody = z.object({
     .refine((v) => v.length > 0, "Message cannot be empty"),
 });
 
-// ---- recommendations ----
 const searchQuery = z.string().max(100).optional();
 export const recommendationListQuery = z.object({ type: z.enum(["music", "movie"]).optional() });
 export const musicQuery = z.object({
@@ -94,7 +88,6 @@ export const movieQuery = z.object({
   q: searchQuery,
 });
 
-// ---- games ----
 export const gameListQuery = z.object({ category: z.string().max(30).optional() });
 export const gameHistoryQuery = z.object({ limit: limit(200, 20), game_id: z.coerce.number().int().positive().optional() });
 export const gameSessionBody = z.object({
@@ -102,11 +95,9 @@ export const gameSessionBody = z.object({
   duration: z.number().int().min(1).max(4 * 60 * 60),
 });
 
-// ---- activities ----
 export const activityListQuery = z.object({ category: z.enum(["breathing", "yoga", "mindfulness"]).optional() });
 export const completionsQuery = z.object({ limit: limit(200, 20) });
 
-// ---- journal ----
 const nonBlank = (max: number) =>
   z
     .string()

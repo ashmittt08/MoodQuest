@@ -23,7 +23,6 @@ export function createAccessToken(userId: number): { token: string; expiresAt: D
   return { token, expiresAt: new Date(exp * 1000) };
 }
 
-/** Throws a jsonwebtoken error for any invalid, expired or wrongly-typed token. */
 export function verifyAccessToken(token: string): AccessTokenPayload {
   const payload = jwt.verify(token, env.JWT_SECRET, { algorithms: ["HS256"] });
   if (typeof payload === "string" || payload.type !== "access" || !payload.sub || !payload.jti || !payload.exp) {
