@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ChatComposer, MAX_MESSAGE_LENGTH } from "@/components/chat/ChatComposer";
-import { CompanionAvatar, MessageBubble, TypingIndicator, type DisplayMessage } from "@/components/chat/ChatParts";
+import { MessageBubble, TypingIndicator, type DisplayMessage } from "@/components/chat/ChatParts";
 import { SuggestionChips } from "@/components/chat/SuggestionChips";
 import { VoiceReplyToggle } from "@/components/chat/VoiceReplyToggle";
 import { EmptyState, ErrorState, Skeleton } from "@/components/ui/States";
@@ -91,36 +91,44 @@ export function HomeChatCard() {
   const chatLink = conversation ? `/chat?c=${conversation.id}` : "/chat";
 
   return (
-    <section aria-labelledby="home-chat-title" className="glass flex flex-col gap-3 p-4 sm:p-5">
-      <header className="flex items-center gap-3">
-        <CompanionAvatar />
+    <section
+      aria-labelledby="home-chat-title"
+      className="glass reveal relative flex flex-col gap-4 overflow-hidden border-primary-400/25 p-5 shadow-[0_0_32px_-8px_rgb(139_141_248/0.35)]"
+    >
+      <div className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-primary-500/20 blur-3xl" aria-hidden />
+      <header className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <h2 id="home-chat-title" className="font-semibold text-white">
-            Chat with AI
-          </h2>
-          <p className="flex items-center gap-1.5 text-xs text-emerald-300">
-            <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgb(52_211_153)]" aria-hidden />
-            <span className="hidden sm:inline">AI Companion · </span>Online
+          <p className="label-caps flex items-center gap-2 text-accent-400">
+            <span className="size-2 rounded-full bg-accent-400 shadow-[0_0_8px_rgb(45_212_191)]" aria-hidden />
+            AI Companion · Online
           </p>
+          <h2 id="home-chat-title" className="mt-2 text-[22px] leading-7 font-semibold text-white">
+            Need to talk or unwind?
+          </h2>
+          <p className="mt-1 text-sm text-slate-400">Share your thoughts with your gentle AI guide anytime.</p>
         </div>
-        <VoiceReplyToggle
-          supported={voice.supported}
-          enabled={voice.enabled}
-          speaking={voice.speaking}
-          onToggle={voice.toggle}
-          className="size-9"
-        />
-        <Link
-          to={chatLink}
-          className="inline-flex items-center gap-0.5 rounded-full px-2.5 py-1.5 text-xs font-medium text-primary-300 transition hover:bg-white/5 hover:text-primary-200"
-        >
-          Open chat <ChevronRight className="size-3.5" aria-hidden />
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <VoiceReplyToggle
+            supported={voice.supported}
+            enabled={voice.enabled}
+            speaking={voice.speaking}
+            onToggle={voice.toggle}
+            className="size-10"
+          />
+          <Link
+            to={chatLink}
+            aria-label="Open chat"
+            title="Open chat"
+            className="flex size-10 items-center justify-center rounded-full border border-primary-300/15 bg-[rgb(22_28_45/0.65)] text-primary-200 transition hover:border-primary-300/35 hover:text-white"
+          >
+            <ChevronRight className="size-5" aria-hidden />
+          </Link>
+        </div>
       </header>
 
       <div
         ref={scrollRef}
-        className="scrollbar-none max-h-72 min-h-32 space-y-3 overflow-y-auto rounded-2xl bg-ink-950/30 p-3"
+        className="scrollbar-none max-h-72 min-h-32 space-y-3 overflow-y-auto rounded-[1.25rem] border border-primary-300/[0.06] bg-[rgb(7_9_14/0.4)] p-3"
         aria-live="polite"
         aria-busy={sending}
       >

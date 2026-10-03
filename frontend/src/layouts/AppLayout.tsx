@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Suspense, useLayoutEffect } from "react";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 
 import { BottomNav } from "@/components/navigation/BottomNav";
 import { SideNav } from "@/components/navigation/SideNav";
@@ -8,7 +8,12 @@ import { cn } from "@/lib/cn";
 
 export function AppLayout() {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
   const fullHeight = pathname.startsWith("/chat");
+
+  useLayoutEffect(() => {
+    if (navigationType !== "POP") window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname, navigationType]);
 
   return (
     <div className="min-h-dvh">

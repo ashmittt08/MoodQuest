@@ -16,18 +16,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-r from-primary-500 via-violet-500 to-indigo-500 text-white shadow-[0_8px_24px_-8px_rgb(139_92_246/0.8)] hover:brightness-110 hover:shadow-[0_10px_30px_-6px_rgb(139_92_246/0.9)]",
-  secondary: "glass-strong text-slate-100 hover:border-white/20 hover:bg-white/5",
-  ghost: "text-slate-300 hover:bg-white/5 hover:text-white",
-  danger:
-    "bg-gradient-to-r from-rose-500 to-red-500 text-white shadow-[0_8px_24px_-8px_rgb(244_63_94/0.8)] hover:brightness-110",
-  outline: "border border-white/15 bg-white/[0.02] text-slate-100 hover:border-white/30 hover:bg-white/5",
+    "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-[0_4px_20px_rgb(139_141_248/0.35)] hover:brightness-110 hover:shadow-[0_6px_26px_rgb(139_141_248/0.5)]",
+  secondary: "border border-primary-300/20 bg-primary-300/[0.08] text-primary-200 hover:bg-primary-300/15",
+  ghost: "text-slate-300 hover:bg-primary-300/[0.08] hover:text-white",
+  danger: "bg-sos text-white shadow-[0_0_24px_rgb(244_63_94/0.35)] hover:brightness-110",
+  outline: "border border-primary-300/20 bg-transparent text-primary-200 hover:border-primary-300/40 hover:bg-primary-300/[0.08]",
 };
 
 const SIZES: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-sm gap-1.5 rounded-xl",
-  md: "h-11 px-5 text-sm gap-2 rounded-2xl",
-  lg: "h-13 px-6 text-base gap-2.5 rounded-2xl",
+  sm: "h-9 px-4 text-[13px] gap-1.5",
+  md: "h-11 px-5 text-[13px] gap-2",
+  lg: "h-13 px-6 text-sm gap-2.5",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -41,7 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex select-none items-center justify-center font-semibold transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100",
+        "inline-flex select-none items-center justify-center rounded-full font-label font-semibold tracking-[0.04em] transition-all duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100",
         VARIANTS[variant],
         SIZES[size],
         fullWidth && "w-full",

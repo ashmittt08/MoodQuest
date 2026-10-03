@@ -347,7 +347,7 @@ function StreaksTab({ days }: { days: number }) {
                 className={cn(
                   "flex aspect-square items-center justify-center rounded-lg text-[10px] font-medium",
                   isActive
-                    ? "bg-gradient-to-br from-primary-500 to-indigo-500 text-white shadow-[0_0_12px_-2px_rgb(139_92_246/0.8)]"
+                    ? "bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-[0_0_12px_-2px_rgb(139_141_248/0.8)]"
                     : "bg-white/[0.04] text-slate-500",
                 )}
               >

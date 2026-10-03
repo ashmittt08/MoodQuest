@@ -51,11 +51,11 @@ export function NotificationBell({ stats }: { stats: MoodStats | null }) {
         onClick={() => setOpen((v) => !v)}
         aria-label={`Notifications${reminders.length ? ` (${reminders.length})` : ""}`}
         aria-expanded={open}
-        className="relative rounded-full p-2 text-slate-200 transition-colors hover:bg-white/5 hover:text-white"
+        className="relative flex size-10 items-center justify-center rounded-full border border-primary-300/15 bg-[rgb(22_28_45/0.65)] text-primary-200 transition hover:border-primary-300/35 hover:text-white"
       >
-        <Bell className="size-5.5" />
+        <Bell className="size-[1.15rem]" />
         {reminders.length > 0 && (
-          <span className="absolute top-1.5 right-1.5 size-2.5 rounded-full bg-rose-500 ring-2 ring-ink-900" aria-hidden />
+          <span className="absolute top-2 right-2 size-2.5 rounded-full bg-[#fb7185] ring-2 ring-ink-900" aria-hidden />
         )}
       </button>
       {open && (

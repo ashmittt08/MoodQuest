@@ -8,9 +8,9 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/[0.06] bg-ink-900/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto max-w-md rounded-full border border-primary-300/12 bg-[rgb(22_28_45/0.72)] px-2 py-1.5 shadow-[0_12px_32px_-4px_rgb(7_9_14/0.75),0_0_24px_rgb(139_141_248/0.12)] backdrop-blur-xl lg:hidden"
     >
-      <ul className="mx-auto grid max-w-xl grid-cols-5 px-2">
+      <ul className="grid grid-cols-5">
         {PRIMARY_NAV.map(({ to, label, icon: Icon }) => (
           <li key={to}>
             <NavLink
@@ -18,31 +18,15 @@ export function BottomNav() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "group relative flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
-                  isActive ? "text-primary-300" : "text-slate-400 hover:text-slate-200",
+                  "flex flex-col items-center gap-0.5 rounded-full py-2 font-label text-[11px] font-medium tracking-[0.04em] transition-all duration-200",
+                  isActive
+                    ? "bg-primary-500/15 text-primary-200 shadow-[inset_0_0_0_1px_rgb(139_141_248/0.35),0_0_18px_rgb(139_141_248/0.3)]"
+                    : "text-slate-400 hover:text-primary-200",
                 )
               }
             >
-              {({ isActive }) => (
-                <>
-                  <span
-                    className={cn(
-                      "absolute top-0 h-0.5 w-8 rounded-full bg-gradient-to-r from-primary-400 to-cyan-300 transition-opacity",
-                      isActive ? "opacity-100" : "opacity-0",
-                    )}
-                    aria-hidden
-                  />
-                  <span
-                    className={cn(
-                      "flex h-8 w-12 items-center justify-center rounded-2xl transition-all duration-200",
-                      isActive && "bg-primary-500/20 shadow-[0_0_20px_-2px_rgb(139_92_246/0.7)]",
-                    )}
-                  >
-                    <Icon className="size-5" aria-hidden />
-                  </span>
-                  {label}
-                </>
-              )}
+              <Icon className="size-5" aria-hidden />
+              {label}
             </NavLink>
           </li>
         ))}

@@ -3,7 +3,7 @@ import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type Texta
 import { cn } from "@/lib/cn";
 
 const CONTROL =
-  "w-full rounded-2xl border bg-ink-850/80 px-4 text-sm text-white placeholder:text-slate-500 outline-none transition-colors focus:border-primary-400/70 focus:bg-ink-800 focus:ring-2 focus:ring-primary-500/25 disabled:opacity-60";
+  "w-full rounded-2xl border bg-[rgb(7_9_14/0.6)] px-4 text-sm text-white shadow-[inset_0_2px_6px_rgb(0_0_0/0.35)] placeholder:text-primary-300/40 outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/25 disabled:opacity-60";
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -40,7 +40,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
             "h-12",
             icon ? "pl-10" : undefined,
             trailing ? "pr-11" : undefined,
-            error ? "border-rose-400/60" : "border-white/10",
+            error ? "border-rose-400/60" : "border-primary-300/15",
           )}
           {...rest}
         />
@@ -75,7 +75,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
         ref={ref}
         id={inputId}
         aria-invalid={!!error || undefined}
-        className={cn(CONTROL, "min-h-40 resize-y py-3 leading-relaxed", error ? "border-rose-400/60" : "border-white/10")}
+        className={cn(CONTROL, "min-h-40 resize-y py-3 leading-relaxed", error ? "border-rose-400/60" : "border-primary-300/15")}
         {...rest}
       />
       {error && <p className="text-xs text-rose-300">{error}</p>}

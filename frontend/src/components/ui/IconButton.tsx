@@ -9,8 +9,8 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const TONES = {
-  default: "glass-strong text-slate-200 hover:text-white hover:border-white/20",
-  primary: "bg-gradient-to-br from-primary-500 to-indigo-500 text-white shadow-lg shadow-violet-900/40 hover:brightness-110",
+  default: "border border-primary-300/15 bg-[rgb(22_28_45/0.65)] text-primary-200 hover:border-primary-300/35 hover:text-white",
+  primary: "bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-[0_0_20px_rgb(139_141_248/0.45)] hover:brightness-110",
   danger: "bg-rose-500/15 text-rose-300 border border-rose-400/30 hover:bg-rose-500/25",
 };
 

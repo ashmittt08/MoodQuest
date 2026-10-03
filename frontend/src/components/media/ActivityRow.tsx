@@ -15,7 +15,7 @@ export function ActivityRow({ activity }: { activity: Activity }) {
   return (
     <Link
       to={`/meditation/${activity.id}`}
-      className="glass group flex animate-slide-up items-center gap-3.5 p-3 transition hover:border-white/15 hover:bg-white/[0.03]"
+      className="glass group flex reveal items-center gap-3.5 p-3 transition hover:border-white/15 hover:bg-white/[0.03]"
     >
       <span
         className="flex size-12 shrink-0 items-center justify-center rounded-2xl"
@@ -34,7 +34,7 @@ export function ActivityRow({ activity }: { activity: Activity }) {
           </span>
         )}
       </span>
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition group-hover:bg-gradient-to-br group-hover:from-primary-500 group-hover:to-indigo-500">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition group-hover:bg-gradient-to-br group-hover:from-primary-500 group-hover:to-primary-600">
         <Play className="ml-0.5 size-4 fill-current" aria-hidden />
       </span>
     </Link>

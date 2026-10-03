@@ -155,7 +155,7 @@ export function EmergencyPage() {
           {helpline && (
             <a
               href={telHref(helpline.number)}
-              className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary-500 to-indigo-500 font-semibold text-white"
+              className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 font-semibold text-white"
             >
               <PhoneCall className="size-5" aria-hidden /> Call {helpline.number}
             </a>

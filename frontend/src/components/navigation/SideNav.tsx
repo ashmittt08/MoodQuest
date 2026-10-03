@@ -16,12 +16,12 @@ function SideLink({ item, danger }: { item: NavItem; danger?: boolean }) {
       end={to === "/"}
       className={({ isActive }) =>
         cn(
-          "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200",
+          "flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200",
           isActive
-            ? "bg-gradient-to-r from-primary-500/25 to-indigo-500/10 text-white shadow-[inset_0_0_0_1px_rgb(167_139_250/0.3),0_0_24px_-8px_rgb(139_92_246/0.8)]"
+            ? "bg-primary-500/15 text-primary-200 shadow-[inset_0_0_0_1px_rgb(139_141_248/0.35),0_0_20px_-4px_rgb(139_141_248/0.45)]"
             : danger
-              ? "text-rose-300 hover:bg-rose-500/10"
-              : "text-slate-400 hover:bg-white/5 hover:text-white",
+              ? "text-sos hover:bg-sos/10"
+              : "text-slate-400 hover:bg-primary-300/[0.06] hover:text-primary-200",
         )
       }
     >
@@ -34,7 +34,7 @@ function SideLink({ item, danger }: { item: NavItem; danger?: boolean }) {
 export function SideNav() {
   const { user, logout } = useAuth();
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/[0.06] bg-ink-900/70 px-4 py-6 backdrop-blur-xl lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-primary-300/10 bg-[rgb(13_17_26/0.72)] px-4 py-6 lg:flex">
       <Link to="/" className="mb-8 px-2">
         <Logo />
       </Link>
@@ -42,7 +42,7 @@ export function SideNav() {
         {[PRIMARY_NAV[0], EMOTION_NAV, ...PRIMARY_NAV.slice(1)].map((item) => (
           <SideLink key={item.to} item={item} />
         ))}
-        <p className="mt-6 mb-2 px-3.5 text-[11px] font-semibold tracking-wider text-slate-500 uppercase">Explore</p>
+        <p className="label-caps mt-6 mb-2 px-4 text-slate-500">Explore</p>
         {EXPLORE_NAV.map((item) => (
           <SideLink key={item.to} item={item} danger={item.to === "/emergency"} />
         ))}

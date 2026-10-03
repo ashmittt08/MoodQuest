@@ -102,7 +102,7 @@ export function EmotionPage() {
           )}
           <FaceFrame active={active} />
           {active && (
-            <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+            <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 text-[11px] font-medium text-white">
               <span className="size-2 animate-pulse rounded-full bg-rose-500" aria-hidden /> Live preview
             </span>
           )}

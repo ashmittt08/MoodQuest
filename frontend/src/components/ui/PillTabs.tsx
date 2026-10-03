@@ -26,11 +26,11 @@ export function PillTabs<T extends string>({ options, value, onChange, label, si
             aria-selected={active}
             onClick={() => onChange(option.value)}
             className={cn(
-              "shrink-0 rounded-full font-medium transition-all duration-200",
+              "shrink-0 rounded-full font-label font-medium tracking-[0.04em] transition-all duration-200",
               size === "sm" ? "px-3.5 py-1.5 text-xs" : "px-4 py-2 text-sm",
               active
-                ? "bg-gradient-to-r from-primary-500 to-indigo-500 text-white shadow-[0_4px_18px_-4px_rgb(139_92_246/0.8)]"
-                : "border border-white/8 bg-white/[0.04] text-slate-300 hover:border-white/15 hover:text-white",
+                ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-[0_4px_20px_rgb(139_141_248/0.35)]"
+                : "border border-primary-300/15 bg-primary-300/[0.06] text-slate-300 hover:border-primary-300/30 hover:text-white",
             )}
           >
             {option.label}

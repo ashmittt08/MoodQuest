@@ -71,7 +71,7 @@ export function MeditationPage() {
                 className="glass aspect-[16/9] animate-pop rounded-[var(--radius-card)] sm:aspect-[21/8]"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/10 to-transparent" />
-                <span className="absolute top-1/2 left-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white backdrop-blur transition group-hover:scale-110">
+                <span className="absolute top-1/2 left-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white transition group-hover:scale-110">
                   <Play className="ml-1 size-7 fill-current" aria-hidden />
                 </span>
                 <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">

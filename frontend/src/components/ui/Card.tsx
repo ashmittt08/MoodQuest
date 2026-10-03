@@ -8,7 +8,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Card({ strong, padded = true, className, ...rest }: CardProps) {
-  return <div className={cn(strong ? "glass-strong" : "glass", padded && "p-4 sm:p-5", className)} {...rest} />;
+  return <div className={cn(strong ? "glass-strong" : "glass", "reveal", padded && "p-4 sm:p-5", className)} {...rest} />;
 }
 
 export function SectionHeader({
@@ -22,7 +22,7 @@ export function SectionHeader({
 }) {
   return (
     <div className={cn("mb-3 flex items-center justify-between gap-3", className)}>
-      <h2 className="text-base font-semibold text-white sm:text-lg">{title}</h2>
+      <h2 className="text-lg font-semibold text-white sm:text-[22px]">{title}</h2>
       {action}
     </div>
   );

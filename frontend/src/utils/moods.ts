@@ -8,11 +8,11 @@ export interface MoodMeta {
 }
 
 export const MOODS: MoodMeta[] = [
-  { key: "happy", label: "Happy", color: "#34d399", message: "You're glowing today!" },
-  { key: "calm", label: "Calm", color: "#38bdf8", message: "You seem relaxed today!" },
+  { key: "happy", label: "Happy", color: "#2dd4bf", message: "You're glowing today!" },
+  { key: "calm", label: "Calm", color: "#8b8df8", message: "You seem relaxed today!" },
   { key: "stressed", label: "Stressed", color: "#a78bfa", message: "Take a breath — you've got this." },
   { key: "sad", label: "Sad", color: "#f472b6", message: "It's okay to have heavy days." },
-  { key: "angry", label: "Angry", color: "#f43f5e", message: "Let's find a way to release it." },
+  { key: "angry", label: "Angry", color: "#fb7185", message: "Let's find a way to release it." },
   { key: "anxious", label: "Anxious", color: "#fb923c", message: "One slow breath at a time." },
 ];
 

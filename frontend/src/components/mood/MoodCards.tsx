@@ -7,66 +7,89 @@ import { moodMeta } from "@/utils/moods";
 
 import { MoodFace } from "./MoodFace";
 
+const STREAK_GOALS = [7, 30, 100, 365];
+
 export function CurrentMoodCard({ latest, loading }: { latest: MoodLog | null; loading: boolean }) {
-  if (loading) return <Skeleton className="h-32" />;
+  if (loading) return <Skeleton className="h-40 rounded-[1.5rem]" />;
   const meta = moodMeta(latest?.mood);
 
   return (
-    <div
-      className="glass relative h-full overflow-hidden p-4 sm:p-5"
-      style={meta ? { background: `linear-gradient(135deg, ${meta.color}26, rgb(11 17 41 / 0.75) 65%)` } : undefined}
-    >
+    <div className="glass reveal relative h-full overflow-hidden p-5">
       {meta && latest ? (
-        <div className="flex items-center gap-4">
-          <div className="relative shrink-0">
-            <div className="absolute inset-0 rounded-full blur-xl" style={{ background: `${meta.color}66` }} aria-hidden />
-            <MoodFace mood={latest.mood} filled className="relative size-14" />
+        <>
+          <div
+            className="pointer-events-none absolute -right-10 -bottom-12 size-40 rounded-full blur-3xl"
+            style={{ background: `${meta.color}40` }}
+            aria-hidden
+          />
+          <p className="label-caps" style={{ color: meta.color }}>
+            Current mood
+          </p>
+          <div className="mt-3 flex items-center gap-2">
+            <p className="font-display text-[28px] leading-none font-semibold tracking-[-0.02em] text-white">{meta.label}</p>
+            <MoodFace mood={latest.mood} className="size-6" />
           </div>
-          <div className="min-w-0">
-            <p className="text-xs text-slate-300">Current Mood</p>
-            <p className="text-2xl font-bold text-white">{meta.label}</p>
-            <p className="text-xs text-slate-300">{meta.message}</p>
-            <p className="mt-1 text-[11px] text-slate-500">Checked in {timeAgo(latest.created_at)}</p>
-          </div>
-        </div>
+          <p className="mt-3 text-sm text-slate-300">{meta.message}</p>
+          <p className="mt-0.5 text-xs text-slate-500">Checked in {timeAgo(latest.created_at)}</p>
+        </>
       ) : (
-        <div className="flex items-center gap-4">
-          <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
-            <Leaf className="size-7" aria-hidden />
+        <>
+          <p className="label-caps text-accent-400">Current mood</p>
+          <div className="mt-3 flex items-center gap-3">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-accent-400/30 bg-accent-400/10 text-accent-400">
+              <Leaf className="size-5" aria-hidden />
+            </span>
+            <div>
+              <p className="font-display font-semibold text-white">How are you feeling today?</p>
+              <p className="text-sm text-slate-400">Add your first mood check-in above.</p>
+            </div>
           </div>
-          <div>
-            <p className="font-semibold text-white">How are you feeling today?</p>
-            <p className="text-sm text-slate-400">Add your first mood check-in above.</p>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );
 }
 
 export function StreakCard({ streak, loading }: { streak: Streak | null; loading: boolean }) {
-  if (loading) return <Skeleton className="h-32" />;
+  if (loading) return <Skeleton className="h-40 rounded-[1.5rem]" />;
   const days = streak?.current ?? 0;
+  const goal = STREAK_GOALS.find((g) => g > days) ?? days;
+  const percent = goal ? Math.min(100, Math.round((days / goal) * 100)) : 100;
 
   return (
-    <div className="glass flex h-full flex-col justify-between p-4 sm:p-5">
-      <p className="text-xs text-slate-300">Streak</p>
-      <div className="my-1 flex items-center gap-2">
+    <div className="glass reveal relative flex h-full flex-col overflow-hidden p-5">
+      <div className="flex items-start justify-between">
+        <p className="label-caps text-astral-gold">Daily streak</p>
         <Flame
-          className={days > 0 ? "size-8 text-orange-400 drop-shadow-[0_0_10px_rgb(251_146_60/0.7)]" : "size-8 text-slate-600"}
+          className={days > 0 ? "size-6 text-astral-gold drop-shadow-[0_0_10px_rgb(253_224_71/0.6)]" : "size-6 text-slate-600"}
           aria-hidden
         />
-        <p className="text-2xl font-bold text-white">
-          {days} <span className="text-base font-semibold">{days === 1 ? "day" : "days"}</span>
-        </p>
       </div>
-      <p className="text-xs text-slate-400">
-        {days === 0
-          ? "Check in today to start a streak"
-          : streak?.active_today
-            ? "Keep going!"
-            : "Check in today to keep it alive"}
+      <p className="mt-3 font-display text-[28px] leading-none font-semibold tracking-[-0.02em] text-white">
+        <span>{days}</span> <span className="text-xl">{days === 1 ? "day" : "days"}</span>
       </p>
+      <p className="mt-2 text-sm text-primary-300">
+        {days === 0 ? "Check in to start one" : streak?.active_today ? "Keep going!" : "Check in to keep it alive"}
+      </p>
+      <div className="mt-auto pt-4">
+        <div
+          className="h-1.5 overflow-hidden rounded-full bg-primary-300/10"
+          role="progressbar"
+          aria-label="Streak goal progress"
+          aria-valuemin={0}
+          aria-valuemax={goal}
+          aria-valuenow={days}
+        >
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-astral-gold to-[#fb7185] transition-[width] duration-500"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+        <div className="mt-2 flex justify-between font-label text-[11px] tracking-[0.04em] text-slate-400">
+          <span>Goal: {goal} days</span>
+          <span>{percent}%</span>
+        </div>
+      </div>
     </div>
   );
 }

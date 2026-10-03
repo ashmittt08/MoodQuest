@@ -1,7 +1,6 @@
 import { Mic, SendHorizontal, Square } from "lucide-react";
 import { useLayoutEffect, useRef, type FormEvent, type RefObject } from "react";
 
-import { IconButton } from "@/components/ui/IconButton";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { cn } from "@/lib/cn";
 
@@ -76,20 +75,28 @@ export function ChatComposer({
   const helpText = speech.listening ? null : (error ?? speech.error);
 
   return (
-    <form onSubmit={handleSubmit} className={cn("flex items-end gap-2", className)}>
-      <IconButton
-        label={speech.listening ? "Stop and send voice message" : "Start voice input"}
-        aria-pressed={speech.listening}
-        onClick={toggleMic}
-        type="button"
+    <form onSubmit={handleSubmit} className={className}>
+      <div
         className={cn(
-          speech.listening &&
-            "border-rose-400/60 bg-rose-500/20 text-rose-200 shadow-[0_0_0_4px_rgb(244_63_94/0.15),0_0_20px_-2px_rgb(244_63_94/0.7)]",
+          "flex items-end gap-1 rounded-[1.75rem] border bg-[rgb(22_28_45/0.72)] p-1.5 shadow-[0_12px_32px_-8px_rgb(7_9_14/0.7)] transition-colors focus-within:border-primary-500/70",
+          error ? "border-rose-400/60" : speech.listening ? "border-sos/50" : "border-primary-300/15",
         )}
       >
-        {speech.listening ? <Square className="size-4 fill-current" /> : <Mic className="size-4.5" />}
-      </IconButton>
-      <div className="min-w-0 flex-1">
+        <button
+          type="button"
+          aria-label={speech.listening ? "Stop and send voice message" : "Start voice input"}
+          title={speech.listening ? "Stop and send voice message" : "Start voice input"}
+          aria-pressed={speech.listening}
+          onClick={toggleMic}
+          className={cn(
+            "flex size-10 shrink-0 items-center justify-center rounded-full transition-all duration-200 active:scale-95",
+            speech.listening
+              ? "sos-ring bg-sos/20 text-[#fb7185]"
+              : "text-primary-200 hover:bg-primary-300/10 hover:text-white",
+          )}
+        >
+          {speech.listening ? <Square className="size-4 fill-current" /> : <Mic className="size-5" />}
+        </button>
         <label htmlFor={id} className="sr-only">
           Message
         </label>
@@ -115,31 +122,34 @@ export function ChatComposer({
           placeholder={speech.listening ? "Listening… speak now" : "Type a message…"}
           aria-invalid={!!error || undefined}
           aria-describedby={helpText || speech.listening ? `${id}-help` : undefined}
-          className={cn(
-            "scrollbar-none block max-h-32 min-h-11 w-full resize-none overflow-y-auto rounded-[1.375rem] border bg-ink-850/80 px-5 py-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-primary-400/60 focus:ring-2 focus:ring-primary-500/20",
-            error ? "border-rose-400/60" : speech.listening ? "border-rose-400/40" : "border-white/10",
-          )}
+          className="scrollbar-none block max-h-32 min-h-10 min-w-0 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-2.5 text-[15px] leading-5 text-white outline-none placeholder:text-primary-300/40"
         />
-        {speech.listening ? (
-          <p id={`${id}-help`} role="status" className="mt-1 flex items-center gap-1.5 px-3 text-xs text-rose-200">
-            <span className="size-2 animate-pulse rounded-full bg-rose-400" aria-hidden />
-            Listening… pause when you're done and it sends automatically.
-          </p>
-        ) : (
-          helpText && (
-            <p
-              id={`${id}-help`}
-              role={error ? "alert" : "status"}
-              className={cn("mt-1 px-3 text-xs", error ? "text-rose-300" : "text-amber-200")}
-            >
-              {helpText}
-            </p>
-          )
-        )}
+        <button
+          type="submit"
+          aria-label="Send message"
+          title="Send message"
+          disabled={sendDisabled}
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-[0_0_20px_rgb(139_141_248/0.5)] transition-all duration-200 hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <SendHorizontal className="size-[1.15rem]" />
+        </button>
       </div>
-      <IconButton label="Send message" tone="primary" type="submit" disabled={sendDisabled} className="size-11">
-        <SendHorizontal className="size-5" />
-      </IconButton>
+      {speech.listening ? (
+        <p id={`${id}-help`} role="status" className="mt-2 flex items-center gap-1.5 px-4 font-label text-xs tracking-[0.03em] text-[#fb7185]">
+          <span className="size-2 animate-pulse rounded-full bg-sos" aria-hidden />
+          Listening… pause when you're done and it sends automatically.
+        </p>
+      ) : (
+        helpText && (
+          <p
+            id={`${id}-help`}
+            role={error ? "alert" : "status"}
+            className={cn("mt-2 px-4 text-xs", error ? "text-rose-300" : "text-astral-gold/90")}
+          >
+            {helpText}
+          </p>
+        )
+      )}
     </form>
   );
 }

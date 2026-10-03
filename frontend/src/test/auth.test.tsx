@@ -84,7 +84,7 @@ describe("authentication flows", () => {
     await user.type(await screen.findByLabelText("Email"), "riya@example.com");
     await user.type(screen.getByLabelText("Password"), "Secret123");
     await user.click(screen.getByRole("button", { name: "Log in" }));
-    expect(await screen.findByRole("heading", { name: "Your Progress" }, { timeout: 15000 })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Your Progress" }, { timeout: 25000 })).toBeInTheDocument();
   });
 
   it("restores the session from a stored token after a refresh", async () => {

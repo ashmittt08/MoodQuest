@@ -111,7 +111,7 @@ export function MemoryChallengeGame({ onFinish }: GameProps) {
                 "flex aspect-square items-center justify-center rounded-2xl border transition-all duration-300",
                 visible
                   ? "border-white/15 bg-ink-700 [transform:rotateY(0deg)]"
-                  : "border-primary-400/30 bg-gradient-to-br from-primary-600 to-indigo-700 hover:brightness-110 [transform:rotateY(180deg)]",
+                  : "border-primary-400/30 bg-gradient-to-br from-primary-600 to-primary-700 hover:brightness-110 [transform:rotateY(180deg)]",
                 card.matched && "opacity-60",
               )}
             >

@@ -15,7 +15,11 @@ interface MoodSelectorProps {
 
 export function MoodSelector({ selected, saving, onSelect, disabled }: MoodSelectorProps) {
   return (
-    <div role="radiogroup" aria-label="How are you feeling today?" className="grid grid-cols-6 gap-1 sm:gap-3">
+    <div
+      role="radiogroup"
+      aria-label="How are you feeling today?"
+      className="scrollbar-none -mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 py-1 sm:mx-0 sm:grid sm:grid-cols-6 sm:overflow-visible sm:px-0"
+    >
       {MOODS.map((mood) => {
         const active = selected === mood.key;
         const isSaving = saving === mood.key;
@@ -26,26 +30,26 @@ export function MoodSelector({ selected, saving, onSelect, disabled }: MoodSelec
             aria-checked={active}
             disabled={disabled || saving !== null}
             onClick={() => onSelect(mood.key)}
-            className="group flex flex-col items-center gap-1.5 rounded-2xl py-1 transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-wait disabled:hover:translate-y-0"
+            className={cn(
+              "group flex w-[5.5rem] shrink-0 snap-start flex-col items-center gap-2.5 rounded-[1.25rem] border px-2 py-4 transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-wait disabled:hover:translate-y-0 sm:w-auto",
+              active ? "bg-[rgb(34_43_69/0.78)]" : "border-primary-300/10 bg-[rgb(22_28_45/0.6)] hover:border-primary-300/25",
+            )}
+            style={active ? { borderColor: mood.color, boxShadow: `0 0 22px -4px ${mood.color}99, inset 0 0 0 1px ${mood.color}55` } : undefined}
           >
             <span
-              className={cn(
-                "relative flex size-12 items-center justify-center rounded-full border transition-all duration-300 sm:size-14",
-                active ? "scale-105 border-transparent" : "border-white/10 bg-white/[0.03] group-hover:border-white/25",
-              )}
-              style={
-                active
-                  ? { background: `radial-gradient(circle, ${mood.color}55, ${mood.color}10 70%)`, boxShadow: `0 0 24px -2px ${mood.color}aa, inset 0 0 0 2px ${mood.color}` }
-                  : undefined
-              }
+              className="flex size-12 items-center justify-center rounded-full border transition-all duration-300"
+              style={{
+                background: `radial-gradient(circle, ${mood.color}${active ? "40" : "1f"}, ${mood.color}0a 75%)`,
+                borderColor: `${mood.color}${active ? "80" : "33"}`,
+              }}
             >
               {isSaving ? (
                 <LoaderCircle className="size-6 animate-spin" style={{ color: mood.color }} aria-hidden />
               ) : (
-                <MoodFace mood={mood.key} filled={active} className="size-8 sm:size-9" />
+                <MoodFace mood={mood.key} className="size-8" />
               )}
             </span>
-            <span className={cn("text-[11px] font-medium sm:text-xs", active ? "text-white" : "text-slate-400")}>
+            <span className={cn("font-label text-xs font-medium tracking-[0.04em]", active ? "text-white" : "text-slate-400")}>
               {mood.label}
             </span>
           </button>

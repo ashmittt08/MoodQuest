@@ -141,7 +141,7 @@ export function JournalPage() {
       ) : (
         <ul className="grid gap-3 lg:grid-cols-2">
           {entries.data.map((entry) => (
-            <li key={entry.id} className="glass flex animate-slide-up flex-col gap-2 p-4">
+            <li key={entry.id} className="glass flex reveal flex-col gap-2 p-4">
               <div className="flex items-start gap-3">
                 {entry.mood ? (
                   <MoodFace mood={entry.mood} className="size-9 shrink-0" />

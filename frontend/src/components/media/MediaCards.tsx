@@ -37,7 +37,7 @@ export function FeaturedCard({
             <button
               onClick={() => openExternal(item.external_url)}
               disabled={!item.external_url}
-              className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/20"
+              className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20"
             >
               <Play className="size-3.5 fill-current" aria-hidden />
               {ctaLabel}
@@ -49,7 +49,7 @@ export function FeaturedCard({
             onClick={() => openExternal(item.external_url)}
             disabled={!item.external_url}
             aria-label={`Play ${item.title}`}
-            className="flex size-13 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-indigo-500 text-white shadow-[0_0_30px_-4px_rgb(139_92_246/0.9)] transition hover:scale-105"
+            className="flex size-13 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-white shadow-[0_0_30px_-4px_rgb(139_141_248/0.9)] transition hover:scale-105"
           >
             <Play className="ml-0.5 size-5 fill-current" aria-hidden />
           </button>
@@ -64,7 +64,7 @@ export function MediaCard({ item, portrait }: { item: Recommendation; portrait?:
     <button
       onClick={() => openExternal(item.external_url)}
       disabled={!item.external_url}
-      className="group w-full animate-slide-up text-left"
+      className="group w-full reveal text-left"
       title={item.external_url ? `Open ${item.title}` : item.title}
     >
       <Artwork
@@ -72,7 +72,7 @@ export function MediaCard({ item, portrait }: { item: Recommendation; portrait?:
         kind={item.type}
         imageUrl={item.image_url}
         className={cn(
-          "rounded-2xl border border-white/[0.07] transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_12px_30px_-10px_rgb(139_92_246/0.6)]",
+          "rounded-2xl border border-white/[0.07] transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_12px_30px_-10px_rgb(139_141_248/0.6)]",
           portrait ? "aspect-[3/4]" : "aspect-square",
         )}
       >
@@ -82,7 +82,7 @@ export function MediaCard({ item, portrait }: { item: Recommendation; portrait?:
             <p className="absolute inset-x-0 bottom-0 p-2.5 text-sm leading-tight font-semibold text-white">{item.title}</p>
           </>
         )}
-        <span className="absolute top-2 right-2 rounded-full bg-ink-950/50 p-1.5 text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+        <span className="absolute top-2 right-2 rounded-full bg-ink-950/50 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100">
           <ExternalLink className="size-3.5" aria-hidden />
         </span>
       </Artwork>

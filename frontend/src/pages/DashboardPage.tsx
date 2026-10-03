@@ -42,18 +42,17 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-6 sm:space-y-8">
       <header className="flex items-center justify-between">
-        <Link to="/" className="lg:hidden">
+        <Link to="/" className="lg:invisible">
           <Logo />
         </Link>
-        <span className="hidden lg:block" />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Link
             to="/emotion"
             aria-label="Emotion detection"
             title="Emotion detection"
-            className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-primary-500 to-fuchsia-500 text-white shadow-[0_0_18px_-2px_rgb(139_92_246/0.9)] transition hover:scale-105 hover:brightness-110"
+            className="flex size-10 items-center justify-center rounded-full border border-accent-400/40 bg-accent-400/10 text-accent-400 shadow-[0_0_18px_rgb(45_212_191/0.3)] transition hover:scale-105 hover:bg-accent-400/20"
           >
             <ScanFace className="size-5" />
           </Link>
@@ -64,19 +63,18 @@ export function DashboardPage() {
         </div>
       </header>
 
-      <section aria-labelledby="greeting" className="space-y-5">
-        <div>
-          <p className="text-xl text-slate-200 sm:text-2xl">{greetingFor()},</p>
-          <h1 id="greeting" className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            {firstName(user?.name)} <span aria-hidden>👋</span>
+      <section aria-labelledby="greeting" className="space-y-4">
+        <div className="space-y-3">
+          <h1 id="greeting" className="text-[28px] leading-9 font-semibold tracking-[-0.025em] text-white sm:text-[40px] sm:leading-[48px]">
+            {greetingFor()}, {firstName(user?.name)} <span aria-hidden>👋</span>
           </h1>
-          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <p className="text-slate-300">How are you feeling today?</p>
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+            <p className="text-base text-slate-300">How are you feeling today?</p>
             <Link
               to="/emotion"
-              className="inline-flex items-center gap-1.5 rounded-full border border-primary-400/40 bg-primary-500/15 px-3 py-1 text-xs font-medium text-primary-200 transition hover:border-primary-300/60 hover:bg-primary-500/25 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full border border-primary-300/20 bg-primary-300/[0.08] px-3.5 py-1.5 font-label text-xs font-medium tracking-[0.04em] text-primary-200 transition hover:border-accent-400/50 hover:bg-primary-300/15 hover:text-white"
             >
-              <ScanFace className="size-3.5" aria-hidden />
+              <ScanFace className="size-4 text-accent-400" aria-hidden />
               Detect with camera
             </Link>
           </div>
@@ -95,7 +93,7 @@ export function DashboardPage() {
       <HomeChatCard />
 
       <section aria-label="Quick Access">
-        <SectionHeader title="Quick Access" />
+        <SectionHeader title="Sanctuary Hub" action={<span className="label-caps text-primary-300">Quick Access</span>} />
         <QuickAccessGrid />
       </section>
     </div>

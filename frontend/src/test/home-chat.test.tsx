@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -92,7 +92,7 @@ function installSpeechSynthesis() {
 
 async function renderHome() {
   renderWithProviders(<AppRoutes />, { route: "/" });
-  return screen.findByRole("heading", { name: "Chat with AI" });
+  return screen.findByRole("heading", { name: "Need to talk or unwind?" });
 }
 
 describe("Home page: Chat with AI", () => {
@@ -133,7 +133,8 @@ describe("Home page: Chat with AI", () => {
     ]);
     vi.mocked(chatService.getConversation).mockResolvedValue(greeting);
     await renderHome();
-    expect(await screen.findByText(/How are you feeling today\?/)).toBeInTheDocument();
+    const card = await screen.findByRole("region", { name: "Need to talk or unwind?" });
+    expect(await within(card).findByText(/How are you feeling today\?/)).toBeInTheDocument();
     expect(chatService.getConversation).toHaveBeenCalledWith(9);
   });
 

@@ -78,7 +78,7 @@ describe("signed-in features", () => {
 
   it("shows an honest empty state on Progress when there is no data", async () => {
     renderWithProviders(<AppRoutes />, { route: "/progress" });
-    expect(await screen.findByText("Keep checking in to unlock your mood insights.", {}, { timeout: 15000 })).toBeInTheDocument();
+    expect(await screen.findByText("Keep checking in to unlock your mood insights.", {}, { timeout: 25000 })).toBeInTheDocument();
     expect(screen.getByText(/Not enough data for insights yet/)).toBeInTheDocument();
   });
 

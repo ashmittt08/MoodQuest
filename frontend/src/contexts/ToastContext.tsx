@@ -23,7 +23,7 @@ const ICONS = { success: CheckCircle2, error: TriangleAlert, info: Info };
 const STYLES: Record<ToastKind, string> = {
   success: "border-emerald-400/30 text-emerald-200",
   error: "border-rose-400/40 text-rose-200",
-  info: "border-violet-400/30 text-violet-100",
+  info: "border-primary-400/30 text-primary-200",
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -64,7 +64,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               key={toast.id}
               role={toast.kind === "error" ? "alert" : "status"}
               className={cn(
-                "glass-strong pointer-events-auto flex w-full max-w-md animate-slide-up items-start gap-3 px-4 py-3 text-sm shadow-2xl",
+                "glass-strong pointer-events-auto backdrop-blur-xl flex w-full max-w-md animate-slide-up items-start gap-3 px-4 py-3 text-sm shadow-2xl",
                 STYLES[toast.kind],
               )}
             >

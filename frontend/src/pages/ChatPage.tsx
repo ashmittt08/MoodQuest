@@ -1,14 +1,15 @@
-import { ArrowLeft, History, LifeBuoy, MessageCircle } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, History, MessageCircle } from "lucide-react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
-import { CompanionAvatar, MessageBubble, TypingIndicator, type DisplayMessage } from "@/components/chat/ChatParts";
+import { CompanionAvatar, DayDivider, MessageBubble, TypingIndicator, dayLabel, type DisplayMessage } from "@/components/chat/ChatParts";
 import { ChatComposer, MAX_MESSAGE_LENGTH } from "@/components/chat/ChatComposer";
 import { ConversationList } from "@/components/chat/ConversationList";
 import { SuggestionChips } from "@/components/chat/SuggestionChips";
 import { VoiceReplyToggle } from "@/components/chat/VoiceReplyToggle";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
+import { LotusMark } from "@/components/ui/Logo";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/States";
 import { useToast } from "@/contexts/ToastContext";
@@ -169,23 +170,23 @@ export function ChatPage() {
   const noConversations = !conversations.loading && !conversations.error && conversations.data?.length === 0 && !detail;
 
   return (
-    <div className="flex h-[calc(100dvh-5.75rem-env(safe-area-inset-bottom))] gap-6 lg:h-[calc(100dvh-4rem)]">
+    <div className="flex h-[calc(100dvh-6.75rem-env(safe-area-inset-bottom))] gap-6 lg:h-[calc(100dvh-4rem)]">
       <aside className="glass hidden w-72 shrink-0 overflow-y-auto p-4 lg:block">{list}</aside>
 
       <section className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-2 pb-3 sm:gap-3">
+        <header className="flex items-center gap-3 pb-4">
           <button
             onClick={() => navigate("/")}
             aria-label="Go back"
-            className="-ml-1.5 rounded-full p-1.5 text-slate-200 hover:bg-white/5 lg:hidden"
+            className="-ml-1.5 rounded-full p-1.5 text-primary-200 hover:bg-primary-300/[0.08] lg:hidden"
           >
             <ArrowLeft className="size-5.5" />
           </button>
-          <CompanionAvatar />
+          <CompanionAvatar online />
           <div className="min-w-0 flex-1">
-            <h1 className="truncate font-semibold text-white">AI Companion</h1>
-            <p className="flex items-center gap-1.5 text-xs text-emerald-300">
-              <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgb(52_211_153)]" aria-hidden />
+            <h1 className="truncate text-xl font-semibold text-white">AI Companion</h1>
+            <p className="flex items-center gap-1.5 font-label text-xs font-medium tracking-[0.06em] text-accent-400">
+              <span className="size-1.5 rounded-full bg-accent-400" aria-hidden />
               Online
             </p>
           </div>
@@ -201,17 +202,17 @@ export function ChatPage() {
           />
         </header>
 
-        <p className="mb-2 flex items-center gap-1.5 text-[11px] whitespace-nowrap text-slate-500">
-          <LifeBuoy className="size-3.5 shrink-0" aria-hidden />
-          <span className="truncate">A supportive companion, not a therapist.</span>
-          <Link to="/emergency" className="font-medium text-rose-300 hover:underline">
-            Need urgent help?
+        <div className="mb-3 flex items-center gap-2.5 rounded-2xl border border-primary-300/12 bg-[rgb(22_28_45/0.6)] px-4 py-2.5 text-sm whitespace-nowrap">
+          <LotusMark className="size-4 shrink-0" />
+          <span className="min-w-0 truncate text-slate-300">A supportive companion, not a therapist.</span>
+          <Link to="/emergency" className="ml-auto inline-flex shrink-0 items-center gap-1 font-label font-medium tracking-[0.03em] text-[#fb7185] hover:underline">
+            Need urgent help? <ArrowRight className="size-3.5" aria-hidden />
           </Link>
-        </p>
+        </div>
 
         <div
           ref={scrollRef}
-          className="glass scrollbar-none flex-1 space-y-4 overflow-y-auto p-4 sm:p-5"
+          className="scrollbar-none flex-1 space-y-4 overflow-y-auto py-2 lg:rounded-[1.5rem] lg:border lg:border-primary-300/10 lg:bg-[rgb(22_28_45/0.6)] lg:p-5"
           aria-live="polite"
           aria-busy={sending}
         >
@@ -234,9 +235,16 @@ export function ChatPage() {
             <LoadingState label="Loading messages…" />
           ) : (
             <>
-              {messages.map((message) => (
-                <MessageBubble key={message.key} message={message} />
-              ))}
+              {messages.map((message, index) => {
+                const previous = messages[index - 1];
+                const newDay = !previous || new Date(previous.created_at).toDateString() !== new Date(message.created_at).toDateString();
+                return (
+                  <Fragment key={message.key}>
+                    {newDay && <DayDivider label={dayLabel(message.created_at)} />}
+                    <MessageBubble message={message} />
+                  </Fragment>
+                );
+              })}
               {sending && <TypingIndicator />}
             </>
           )}

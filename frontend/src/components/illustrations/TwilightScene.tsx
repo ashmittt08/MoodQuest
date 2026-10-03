@@ -1,76 +1,86 @@
 import { useMemo } from "react";
 
+function seeded(seed: number) {
+  let s = seed;
+  return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
+}
+
 export function TwilightScene() {
-  const stars = useMemo(() => {
-    let seed = 7;
-    const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
-    return Array.from({ length: 90 }, () => ({ x: rand() * 1200, y: rand() * 420, r: rand() * 1.4 + 0.3, o: rand() * 0.7 + 0.3 }));
+  const { stars, flowers } = useMemo(() => {
+    const rand = seeded(11);
+    return {
+      stars: Array.from({ length: 110 }, () => ({ x: rand() * 1200, y: rand() * 620, r: rand() * 1.3 + 0.25, o: rand() * 0.6 + 0.25 })),
+      flowers: Array.from({ length: 260 }, () => {
+        const y = 690 + rand() * 210;
+        const depth = (y - 690) / 210;
+        return { x: rand() * 1200, y, r: 1.5 + depth * 4.5 + rand() * 1.5, o: 0.25 + depth * 0.55 };
+      }),
+    };
   }, []);
 
   return (
-    <svg
-      viewBox="0 0 1200 900"
-      preserveAspectRatio="xMidYMid slice"
-      className="absolute inset-0 size-full"
-      aria-hidden
-    >
+    <svg viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 size-full" aria-hidden>
       <defs>
-        <linearGradient id="tw-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#0b0a2b" />
-          <stop offset="0.35" stopColor="#2e1065" />
-          <stop offset="0.6" stopColor="#7e22ce" />
-          <stop offset="0.75" stopColor="#db2777" />
-          <stop offset="0.82" stopColor="#fb923c" />
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0a0e1c" />
+          <stop offset="0.45" stopColor="#131a33" />
+          <stop offset="0.75" stopColor="#1d2347" />
+          <stop offset="1" stopColor="#2a2550" />
         </linearGradient>
-        <linearGradient id="tw-lake" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#be185d" stopOpacity="0.7" />
-          <stop offset="0.4" stopColor="#4c1d95" />
-          <stop offset="1" stopColor="#0b0a2b" />
+        <linearGradient id="aurora-teal" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#2dd4bf" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#2dd4bf" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#2dd4bf" stopOpacity="0" />
         </linearGradient>
-        <radialGradient id="tw-glow" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#fbcfe8" stopOpacity="0.9" />
-          <stop offset="1" stopColor="#fbcfe8" stopOpacity="0" />
+        <linearGradient id="aurora-violet" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#8b8df8" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#a78bfa" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#8b8df8" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="bloom" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#8b8df8" stopOpacity="0.35" />
+          <stop offset="1" stopColor="#8b8df8" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="tw-fade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#070b1d" stopOpacity="0" />
-          <stop offset="1" stopColor="#070b1d" stopOpacity="0.95" />
+        <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#2a2550" stopOpacity="0" />
+          <stop offset="0.35" stopColor="#3a2f6b" stopOpacity="0.85" />
+          <stop offset="1" stopColor="#1b1638" />
         </linearGradient>
+        <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0.55" stopColor="#0d111a" stopOpacity="0" />
+          <stop offset="1" stopColor="#0d111a" stopOpacity="0.55" />
+        </linearGradient>
+        <filter id="soft" x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="28" />
+        </filter>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.2" />
+        </filter>
       </defs>
 
-      <rect width="1200" height="900" fill="url(#tw-sky)" />
-      <g fill="#fff">
+      <rect width="1200" height="900" fill="url(#sky)" />
+      <circle cx="620" cy="250" r="380" fill="url(#bloom)" />
+
+      <g filter="url(#soft)">
+        <path d="M-80 360 C 220 180 420 420 700 260 S 1120 120 1300 220" stroke="url(#aurora-teal)" strokeWidth="90" fill="none" />
+        <path d="M-60 300 C 260 240 520 120 760 220 S 1080 360 1300 300" stroke="url(#aurora-violet)" strokeWidth="70" fill="none" />
+        <path d="M200 480 C 420 380 640 520 900 400" stroke="url(#aurora-teal)" strokeWidth="50" fill="none" opacity="0.6" />
+      </g>
+
+      <g fill="#ffffff" filter="url(#glow)">
         {stars.map((s, i) => (
           <circle key={i} cx={s.x} cy={s.y} r={s.r} opacity={s.o} />
         ))}
       </g>
-      <circle cx="730" cy="190" r="120" fill="url(#tw-glow)" opacity="0.5" />
-      <circle cx="730" cy="190" r="30" fill="#fdf2f8" opacity="0.92" />
 
-      <path d="M0 560 L140 430 L260 520 L400 380 L540 500 L660 410 L800 520 L940 400 L1080 500 L1200 440 V600 H0Z" fill="#6b21a8" opacity="0.75" />
-      <path d="M0 600 L180 490 L320 570 L470 470 L620 570 L760 480 L900 575 L1050 495 L1200 560 V620 H0Z" fill="#4c1d95" />
-      <path d="M0 625 L220 560 L420 615 L640 555 L860 618 L1060 565 L1200 600 V640 H0Z" fill="#2e1065" />
-
-      <rect y="630" width="1200" height="270" fill="url(#tw-lake)" />
-      {Array.from({ length: 9 }, (_, i) => (
-        <rect key={i} x={690 - i * 6} y={650 + i * 16} width={100 + i * 12} height="3" rx="1.5" fill="#fbcfe8" opacity={0.45 - i * 0.045} />
-      ))}
-
-      <path d="M0 760 C220 715 420 730 600 770 C690 790 730 830 770 900 H0Z" fill="#12082e" />
-      <ellipse cx="480" cy="742" rx="120" ry="26" fill="#0d0624" />
-      <g fill="#0a0420" transform="translate(150 0)">
-        <circle cx="330" cy="618" r="20" />
-        <path d="M300 640 Q330 628 360 640 L372 700 Q330 712 288 700Z" />
-        <path d="M288 700 Q260 712 268 728 Q330 742 392 728 Q400 712 372 700 Q330 716 288 700Z" />
-        <path d="M300 650 Q276 680 292 700" stroke="#0a0420" strokeWidth="12" fill="none" strokeLinecap="round" />
-        <path d="M360 650 Q384 680 368 700" stroke="#0a0420" strokeWidth="12" fill="none" strokeLinecap="round" />
-      </g>
-      <g fill="#12082e">
-        <path d="M70 760 L92 690 L114 760Z" />
-        <path d="M110 752 L128 700 L146 752Z" />
-        <path d="M520 785 L540 730 L560 785Z" />
+      <path d="M0 720 C 240 680 420 700 640 690 C 860 680 1020 700 1200 685 V900 H0Z" fill="url(#field)" />
+      <g fill="#a99bf0">
+        {flowers.map((f, i) => (
+          <circle key={i} cx={f.x} cy={f.y} r={f.r} opacity={f.o} />
+        ))}
       </g>
 
-      <rect width="1200" height="900" fill="url(#tw-fade)" />
+      <rect width="1200" height="900" fill="url(#fade)" />
     </svg>
   );
 }
