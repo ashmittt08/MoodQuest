@@ -6,7 +6,7 @@ import { Logo } from "@/components/ui/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/cn";
 
-import { EXPLORE_NAV, PRIMARY_NAV, type NavItem } from "./navItems";
+import { EMOTION_NAV, EXPLORE_NAV, PRIMARY_NAV, type NavItem } from "./navItems";
 
 function SideLink({ item, danger }: { item: NavItem; danger?: boolean }) {
   const { to, label, icon: Icon } = item;
@@ -39,7 +39,7 @@ export function SideNav() {
         <Logo />
       </Link>
       <nav aria-label="Primary" className="flex flex-1 flex-col gap-1 overflow-y-auto">
-        {PRIMARY_NAV.map((item) => (
+        {[PRIMARY_NAV[0], EMOTION_NAV, ...PRIMARY_NAV.slice(1)].map((item) => (
           <SideLink key={item.to} item={item} />
         ))}
         <p className="mt-6 mb-2 px-3.5 text-[11px] font-semibold tracking-wider text-slate-500 uppercase">Explore</p>

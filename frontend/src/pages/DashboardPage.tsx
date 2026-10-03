@@ -1,3 +1,4 @@
+import { ScanFace } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -48,6 +49,14 @@ export function DashboardPage() {
         </Link>
         <span className="hidden lg:block" />
         <div className="flex items-center gap-2">
+          <Link
+            to="/emotion"
+            aria-label="Emotion detection"
+            title="Emotion detection"
+            className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-primary-500 to-fuchsia-500 text-white shadow-[0_0_18px_-2px_rgb(139_92_246/0.9)] transition hover:scale-105 hover:brightness-110"
+          >
+            <ScanFace className="size-5" />
+          </Link>
           <NotificationBell stats={stats.data} />
           <Link to="/profile" aria-label="Your profile">
             <Avatar name={user?.name ?? ""} src={user?.avatar_url} size="sm" />
@@ -61,7 +70,16 @@ export function DashboardPage() {
           <h1 id="greeting" className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {firstName(user?.name)} <span aria-hidden>👋</span>
           </h1>
-          <p className="mt-1 text-slate-300">How are you feeling today?</p>
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <p className="text-slate-300">How are you feeling today?</p>
+            <Link
+              to="/emotion"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary-400/40 bg-primary-500/15 px-3 py-1 text-xs font-medium text-primary-200 transition hover:border-primary-300/60 hover:bg-primary-500/25 hover:text-white"
+            >
+              <ScanFace className="size-3.5" aria-hidden />
+              Detect with camera
+            </Link>
+          </div>
         </div>
         <MoodSelector selected={selected} saving={saving} onSelect={handleSelect} disabled={stats.loading && !stats.data} />
       </section>

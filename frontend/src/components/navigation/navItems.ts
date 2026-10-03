@@ -27,11 +27,12 @@ export const PRIMARY_NAV: NavItem[] = [
   { to: "/profile", label: "Profile", icon: User },
 ];
 
+export const EMOTION_NAV: NavItem = { to: "/emotion", label: "Emotion Detection", icon: ScanFace };
+
 export const EXPLORE_NAV: NavItem[] = [
   { to: "/music", label: "Music", icon: Music },
   { to: "/movies", label: "Movies", icon: Clapperboard },
   { to: "/meditation", label: "Meditation", icon: Flower2 },
   { to: "/journal", label: "Journal", icon: BookOpen },
-  { to: "/emotion", label: "Emotion Detection", icon: ScanFace },
   { to: "/emergency", label: "Emergency Help", icon: Phone },
 ];
